@@ -1,0 +1,16 @@
+version: "3.8"
+x-base: &base
+  image: node:lts
+  volumes:
+    - nm:/app/node_modules
+    - .:/app/
+  working_dir: /app/
+
+services:
+  install:
+    <<: *base
+    command: yarn install --no-progress --non-interactive
+
+volumes:
+  nm:
+    external: true

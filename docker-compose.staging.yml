@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  app:
+    build:
+      args:
+        - app_version=staging
+      context: .
+    command: yarn run start
+    container_name: alti
+    environment:
+      - APP_VERSION=staging
+      - CANVAS_API_URL
+      - CANVAS_TOKEN
+      - LTI_KEY
+      - LTI_SECRET
+      - NODE_ENV=production
+      - TRUST_PROXY
+      - VIRTUAL_HOST=dev.127.0.0.1.xip.io
+    image: alti-app:staging
+    ports:
+      - "3000"
+    working_dir: /app/
+  reverse-proxy:
+    container_name: nginx
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - $HOME/certs:/etc/nginx/certs

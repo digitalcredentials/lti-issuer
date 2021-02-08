@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  app:
+    command: yarn run start-dev
+    container_name: alti
+    environment:
+      - APP_VERSION=develop
+      - CANVAS_API_URL
+      - CANVAS_TOKEN
+      - LTI_KEY
+      - LTI_SECRET
+      - NODE_ENV=development
+      - TRUST_PROXY
+      - VIRTUAL_HOST
+    image: node:lts
+    ports:
+      - "3000"
+    volumes:
+      - nm:/app/node_modules
+      - .:/app
+    working_dir: /app/
+  reverse-proxy:
+    container_name: nginx
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - $HOME/certs:/etc/nginx/certs
+
+volumes:
+  nm:
+    external: true
