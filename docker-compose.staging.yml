@@ -9,8 +9,6 @@ services:
     container_name: alti
     environment:
       - APP_VERSION=staging
-      - CANVAS_API_URL
-      - CANVAS_TOKEN
       - LTI_KEY
       - LTI_SECRET
       - NODE_ENV=production

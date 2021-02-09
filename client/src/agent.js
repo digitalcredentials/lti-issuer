@@ -47,15 +47,8 @@ const requests = {
   },
 };
 
-const Canvas = {
-  status: () => {
-    return requests.get(`/canvas-status/`);
-  },
-};
-
 const getContext = () => requests.get(`/context/`);
 
 export default {
-  Canvas,
   getContext,
 };
