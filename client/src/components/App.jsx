@@ -3,8 +3,13 @@ import ReactGA from "react-ga";
 import qs from "qs";
 import { Spinner, View } from "@instructure/ui";
 import agent from "../agent";
-import Demo from "./Demo";
 import Layout from "./Layout";
+import ViewCredTeacher from "./ViewCredTeacher";
+import ViewCredStudent from "./ViewCredStudent";
+import GTCredInfo from "./GTCredInfo";
+import CreateCred from "./CreateCred";
+import ClaimCred from "./ClaimCred";
+import ListCred from "./ListCred";
 
 /** App top-level component */
 class App extends React.Component {
@@ -13,7 +18,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       gotContext: false,
-      versionInfo: null,
+      versionInfo: null
     };
   }
 
@@ -31,11 +36,11 @@ class App extends React.Component {
 
     if (analyticsId) {
       ReactGA.initialize(analyticsId);
-      ReactGA.set({ title: "LTI App" });
+      ReactGA.set({ title: "GT Cred" });
       ReactGA.pageview(window.location.pathname);
     }
 
-    agent.getContext().then((response) => {
+    agent.getContext().then(response => {
       this.setState({ gotContext: true });
       if (response.data.version) {
         this.setState({ versionInfo: response.data.version });
@@ -50,7 +55,14 @@ class App extends React.Component {
     return (
       <Layout versionInfo={this.state.versionInfo || ""}>
         {this.state.gotContext ? (
-          <Demo />
+          <div>
+            <GTCredInfo />
+            <ViewCredTeacher />
+            <ViewCredStudent />
+            <ListCred />
+            <CreateCred />
+            <ClaimCred />
+          </div>
         ) : (
           <View as="div" margin="large auto" textAlign="center">
             <Spinner size="large" renderTitle="Loading..." />

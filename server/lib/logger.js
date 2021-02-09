@@ -20,7 +20,7 @@ function getLogLevel() {
 
 // eslint-disable-next-line new-cap
 const logger = new bunyan.createLogger({
-  name: "alti",
+  name: "lti-issuer",
   streams: [
     {
       level: getLogLevel(),
