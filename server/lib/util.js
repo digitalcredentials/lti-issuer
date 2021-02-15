@@ -1,6 +1,6 @@
 const qs = require("qs");
 
-const getRole = userRoles => {
+const getRole = (userRoles) => {
   const instructorRegex = /.*instructor.*/i;
   const learnerRegex = /.*learner.*/i;
 
@@ -11,7 +11,7 @@ const getRole = userRoles => {
     return "none";
   }
 
-  userRoles.forEach(role => {
+  userRoles.forEach((role) => {
     if (instructorRegex.test(role)) {
       isInstructor = true;
     } else if (learnerRegex.test(role)) {
@@ -26,16 +26,17 @@ const getRole = userRoles => {
 };
 
 module.exports = {
-  createContext: user => ({
+  createContext: (user) => ({
     courseId: user.custom_canvas_course_id || null,
     userId: user.custom_lis_user_username || null,
-    userRole: getRole(user.roles)
+    userRole: getRole(user.roles),
+    fullContext: user,
   }),
-  parseQueryParameters: headers => {
+  parseQueryParameters: (headers) => {
     // match / or ? or both at the start of the location string, and remove.
     const queryString = headers.location.replace(/^\/?\??/, "");
     return qs.parse(queryString, {
-      ignoreQueryPrefix: true
+      ignoreQueryPrefix: true,
     });
-  }
+  },
 };

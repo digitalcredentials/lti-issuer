@@ -9,7 +9,7 @@ const getEnvVarOrDefault = (envVar, defaultValue) => {
   }
 };
 
-const getEnvVarOrNull = envVar => {
+const getEnvVarOrNull = (envVar) => {
   if (!!process.env[envVar]) {
     return process.env[envVar];
   } else {
@@ -22,21 +22,13 @@ const config = {};
 /* Set default values assuming NODE_ENV === production */
 
 config.analytics = {
-  id: getEnvVarOrNull("ANALYTICS_ID")
+  id: getEnvVarOrNull("ANALYTICS_ID"),
 };
 
-config.buzzAPI = {
-  appID: getEnvVarOrDefault("BUZZAPI_APP_ID"),
-  password: getEnvVarOrDefault("BUZZAPI_PASSWORD")
-};
-config.canvas = {
-  apiUrl: getEnvVarOrDefault("CANVAS_API_URL"),
-  token: getEnvVarOrDefault("CANVAS_TOKEN")
-};
 config.jwtSecret = getEnvVarOrDefault("JWT_SECRET");
 config.lti = {
   key: getEnvVarOrDefault("LTI_KEY"),
-  secret: getEnvVarOrDefault("LTI_SECRET")
+  secret: getEnvVarOrDefault("LTI_SECRET"),
 };
 config.logLevel = getEnvVarOrDefault("LOG_LEVEL", "info");
 config.passportStrategy = "lti";

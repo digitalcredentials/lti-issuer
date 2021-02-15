@@ -23,11 +23,4 @@ router.get("/context", (req, res, next) => {
   });
 });
 
-const Data = require("../lib/dataLayer");
-
-const canvasStatusHandler = require("./canvasStatusHandler")(Data);
-router.get("/canvas-status", (req, res, next) => {
-  canvasStatusHandler(req).then((response) => res.send(response));
-});
-
 module.exports = router;
