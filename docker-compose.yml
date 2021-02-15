@@ -1,32 +1,26 @@
-version: "3.8"
+version: "3"
+
 services:
-  app:
-    command: yarn run start-dev
-    container_name: alti
+  web:
+    build: .
     environment:
-      - APP_VERSION=develop
-      - LTI_KEY
-      - LTI_SECRET
-      - NODE_ENV=development
-      - TRUST_PROXY
-      - VIRTUAL_HOST
-    image: node:lts
-    ports:
+      NODE_ENV: production
+      TRUST_PROXY: uniquelocal
+      LTI_KEY: $LTI_KEY
+      LTI_SECRET: $LTI_SECRET
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`dev.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.whoami.tls=true"
+    expose:
       - "3000"
-    volumes:
-      - nm:/app/node_modules
-      - .:/app
-    working_dir: /app/
+
   reverse-proxy:
-    container_name: nginx
-    image: jwilder/nginx-proxy
+    image: traefik:v2.0
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - $HOME/certs:/etc/nginx/certs
-
-volumes:
-  nm:
-    external: true
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $HOME/certs:/data/traefik:ro
+      - ./traefik:/etc/traefik:ro
