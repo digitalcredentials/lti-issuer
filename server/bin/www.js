@@ -5,8 +5,8 @@
  */
 
 const app = require("../server");
-const debug = require("debug")("alti:server");
 const http = require("http");
+const logger = require("../logger");
 
 /**
  * Get port from environment and store in Express.
@@ -82,5 +82,5 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  debug("Listening on " + bind);
+  logger.debug(`Listening on ${bind}`);
 }
