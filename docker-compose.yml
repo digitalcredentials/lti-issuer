@@ -1,6 +1,25 @@
-version: "3"
+version: "2.4"
 
 services:
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: credadmin
+      POSTGRES_PASSWORD: admin_cred_access
+      POSTGRES_DB: credadmin
+    labels:
+      - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.postgres.entrypoints=postgres"
+      - "traefik.tcp.routers.postgres.service=postgres"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U credadmin -d credadmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build: .
     environment:
@@ -14,6 +33,19 @@ services:
     expose:
       - "3000"
 
+  cred-admin:
+    image: stuartfreeman/cred-admin
+    environment:
+      CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`cred.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.whoami.tls=true"
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "3000"
+
   reverse-proxy:
     image: traefik:v2.0
     ports:
@@ -24,3 +56,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - $HOME/certs:/data/traefik:ro
       - ./traefik:/etc/traefik:ro
+
+volumes:
+  postgres_data:
