@@ -5,10 +5,7 @@ services:
     image: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_USER: credadmin
-      POSTGRES_PASSWORD: admin_cred_access
-      POSTGRES_DB: credadmin
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     labels:
       - "traefik.tcp.services.postgres.loadbalancer.server.port=5432"
       - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
@@ -28,8 +25,11 @@ services:
       LTI_KEY: $LTI_KEY
       LTI_SECRET: $LTI_SECRET
     labels:
-      - "traefik.http.routers.whoami.rule=Host(`dev.127.0.0.1.xip.io`)"
-      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.web.rule=Host(`dev.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.web.tls=true"
+    depends_on:
+      db:
+        condition: service_healthy
     expose:
       - "3000"
 
@@ -38,8 +38,8 @@ services:
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
     labels:
-      - "traefik.http.routers.whoami.rule=Host(`cred.127.0.0.1.xip.io`)"
-      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.credadmin.tls=true"
     depends_on:
       db:
         condition: service_healthy
