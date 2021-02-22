@@ -43,6 +43,10 @@ config.database = {
   password: getEnvVarOrNull("DB_PASSWORD"),
 };
 
+config.credadmin = {
+  url: getEnvVarOrDefault("CRED_ADMIN_URL", "http://localhost/"),
+};
+
 if (process.env.NODE_ENV === "development") {
   config.logLevel = "debug";
 }

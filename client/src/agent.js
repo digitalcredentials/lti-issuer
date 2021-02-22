@@ -38,13 +38,20 @@ const tokenPlugin = (req) => {
 };
 
 const requests = {
-  get: (url) => {
-    return superagent
+  get: (url) =>
+    superagent
       .get(`${API_ROOT}${url}`)
       .use(tokenPlugin)
       .then(handleErrors)
-      .then(responseBody);
-  },
+      .then(responseBody),
+  post: (url, body) =>
+    superagent
+      .post(`${API_ROOT}${url}`)
+      .use(tokenPlugin)
+      .set("Content-Type", "application/json")
+      .send(body)
+      .then(handleErrors)
+      .then(responseBody),
 };
 
 const getContext = () => requests.get(`/context/`);
