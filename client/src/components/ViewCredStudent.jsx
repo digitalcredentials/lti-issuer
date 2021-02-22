@@ -4,15 +4,23 @@ import { Text } from "@instructure/ui-text";
 import { Table } from "@instructure/ui-table";
 import { Select } from "@instructure/ui-select";
 
-// similar to ViewCredTeacher but will show status of credential
+/**
+ * similar to ViewCredTeacher but will show status of credential
+ */
 class ViewCredStudent extends React.Component {
+  /**
+   *
+   */
   constructor() {
     super();
     this.state = {
-      modules: []
+      modules: [],
     };
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     // TODO: component will retrieve data from backend regarding modules and credentials associated with them and update state
     this.setState({
@@ -22,38 +30,42 @@ class ViewCredStudent extends React.Component {
           credentials: [
             {
               cred: "Novice Credential",
-              awarded: false
+              awarded: false,
             },
             {
               cred: "Intermediate Credential",
-              awarded: true
+              awarded: true,
             },
             {
               cred: "Advanced Credential",
-              awarded: true
-            }
-          ]
+              awarded: true,
+            },
+          ],
         },
         {
           name: "Module 2",
           credentials: [
             {
               cred: "Cooking Credential",
-              awarded: true
+              awarded: true,
             },
             {
               cred: "Tennis Credential",
-              awarded: true
+              awarded: true,
             },
             {
               cred: "Chess Credential",
-              awarded: true
-            }
-          ]
-        }
-      ]
+              awarded: true,
+            },
+          ],
+        },
+      ],
     });
   }
+
+  /**
+   * @return {Component}
+   */
   render() {
     return (
       <View as="div" margin="medium none none none">
@@ -64,7 +76,7 @@ class ViewCredStudent extends React.Component {
               borderBottom: "solid",
               borderColor: "rgba(0,48,87,1)",
               borderWidth: "3px",
-              marginTop: "17px"
+              marginTop: "17px",
             }}
           ></div>
         </View>
@@ -84,12 +96,12 @@ class ViewCredStudent extends React.Component {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {this.state.modules.map(module => (
-                <Table.Row>
+              {this.state.modules.map((module) => (
+                <Table.Row key={module.id}>
                   <Table.RowHeader>{module.name}</Table.RowHeader>
                   <Table.Cell>
                     <Select>
-                      {module.credentials.map(cred => {
+                      {module.credentials.map((cred) => {
                         <Select.Option id={cred} key={cred}>
                           {cred.cred}
                         </Select.Option>;

@@ -4,18 +4,26 @@ import { Text } from "@instructure/ui-text";
 import { Table } from "@instructure/ui-table";
 import { Link } from "@instructure/ui-link";
 
-// similar to ViewCredTeacher but will show status of credential
+/**
+ * similar to ViewCredTeacher but will show status of credential
+ */
 class ListCred extends React.Component {
+  /**
+   *
+   */
   constructor() {
     super();
     this.state = {
       credential: "",
-      recipients: []
+      recipients: [],
     };
   }
 
-  // particular credential and recipient info will be passed into this component via props
+  /**
+   *
+   */
   componentDidMount() {
+    // particular credential and recipient info will be passed into this component via props
     this.setState({
       credential: "Tennis Credential",
       recipients: [
@@ -24,18 +32,22 @@ class ListCred extends React.Component {
           email: "cyang419@gatech.edu",
           claimed: true,
           approvalDate: "12/22/20",
-          issueDate: "12/27/20"
+          issueDate: "12/27/20",
         },
         {
           name: "Stuart Freeman",
           email: "stuart@gatech.edu",
           claimed: false,
           approvalDate: "12/12/20",
-          issueDate: null
-        }
-      ]
+          issueDate: null,
+        },
+      ],
     });
   }
+
+  /**
+   * @return {Component}
+   */
   render() {
     return (
       <View as="div" margin="medium none none none">
@@ -49,7 +61,7 @@ class ListCred extends React.Component {
               borderBottom: "solid",
               borderColor: "rgba(0,48,87,1)",
               borderWidth: "3px",
-              marginTop: "17px"
+              marginTop: "17px",
             }}
           ></div>
         </View>
@@ -75,8 +87,8 @@ class ListCred extends React.Component {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {this.state.recipients.map(recipient => (
-                <Table.Row>
+              {this.state.recipients.map((recipient) => (
+                <Table.Row key={recipient.id}>
                   <Table.RowHeader>{recipient.name}</Table.RowHeader>
                   <Table.Cell>
                     <Link href={"mailto:" + recipient.email}>

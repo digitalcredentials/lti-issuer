@@ -5,7 +5,13 @@ import { List } from "@instructure/ui-list";
 import { Link } from "@instructure/ui-link";
 import { Img } from "@instructure/ui-img";
 
+/**
+ *
+ */
 class ClaimCred extends React.Component {
+  /**
+   *
+   */
   constructor() {
     super();
     this.state = {
@@ -13,10 +19,13 @@ class ClaimCred extends React.Component {
       criteria: [],
       complete: false,
       qrImgSrc: "",
-      qrLink: ""
+      qrLink: "",
     };
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     // info about credential will be passed in as props
     this.setState({
@@ -25,10 +34,13 @@ class ClaimCred extends React.Component {
       complete: true,
       qrImgSrc:
         "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1920px-QR_code_for_mobile_English_Wikipedia.svg.png",
-      qrLink: "https://google.com"
+      qrLink: "https://google.com",
     });
   }
 
+  /**
+   * @return {Component}
+   */
   render() {
     return (
       <View as="div" margin="medium none none none" width="75%">
@@ -39,7 +51,7 @@ class ClaimCred extends React.Component {
               borderBottom: "solid",
               borderColor: "rgba(0,48,87,1)",
               borderWidth: "3px",
-              marginTop: "17px"
+              marginTop: "17px",
             }}
           ></div>
         </View>
@@ -55,8 +67,8 @@ class ClaimCred extends React.Component {
         <View as="div" textAlign="start" padding="medium medium none medium">
           <Text size="medium">Criteria:</Text>
           <List margin="small 0 medium">
-            {this.state.criteria.map(li => (
-              <List.Item>{li}</List.Item>
+            {this.state.criteria.map((li) => (
+              <List.Item key={li}>{li}</List.Item>
             ))}
           </List>
         </View>

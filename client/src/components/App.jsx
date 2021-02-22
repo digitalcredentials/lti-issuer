@@ -18,7 +18,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       gotContext: false,
-      versionInfo: null
+      versionInfo: null,
+      context: null,
     };
   }
 
@@ -40,10 +41,11 @@ class App extends React.Component {
       ReactGA.pageview(window.location.pathname);
     }
 
-    agent.getContext().then(response => {
+    agent.getContext().then((response) => {
       this.setState({ gotContext: true });
       if (response.data.version) {
         this.setState({ versionInfo: response.data.version });
+        this.setState({ context: response.context });
       }
     });
   }
@@ -56,9 +58,13 @@ class App extends React.Component {
       <Layout versionInfo={this.state.versionInfo || ""}>
         {this.state.gotContext ? (
           <div>
+            <code>{JSON.stringify(this.state.context)}</code>
             <GTCredInfo />
-            <ViewCredTeacher />
-            <ViewCredStudent />
+            {this.state.context.roles.includes("Instructor") ? (
+              <ViewCredTeacher />
+            ) : (
+              <ViewCredStudent />
+            )}
             <ListCred />
             <CreateCred />
             <ClaimCred />

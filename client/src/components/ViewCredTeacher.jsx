@@ -5,15 +5,23 @@ import { Table } from "@instructure/ui-table";
 import { Button } from "@instructure/ui-buttons";
 import { Select } from "@instructure/ui-select";
 
-// similar to ViewCredStudent but will show recipient lists
+/**
+ * similar to ViewCredStudent but will show recipient lists
+ */
 class ViewCredTeacher extends React.Component {
+  /**
+   *
+   */
   constructor() {
     super();
     this.state = {
-      modules: []
+      modules: [],
     };
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     // TODO: component will retrieve data from backend regarding modules and credentials associated with them and update state
     this.setState({
@@ -23,38 +31,42 @@ class ViewCredTeacher extends React.Component {
           credentials: [
             {
               cred: "Novice Credential",
-              recipients: ["Chris Yang", "Stuart Freeman"]
+              recipients: ["Chris Yang", "Stuart Freeman"],
             },
             {
               cred: "Intermediate Credential",
-              recipients: ["Chris Yang", "Stuart Freeman"]
+              recipients: ["Chris Yang", "Stuart Freeman"],
             },
             {
               cred: "Advanced Credential",
-              recipients: ["Chris Yang", "Stuart Freeman"]
-            }
-          ]
+              recipients: ["Chris Yang", "Stuart Freeman"],
+            },
+          ],
         },
         {
           name: "Module 2",
           credentials: [
             {
               cred: "Cooking Credential",
-              recipients: ["Emily Reese", "Stuart Freeman"]
+              recipients: ["Emily Reese", "Stuart Freeman"],
             },
             {
               cred: "Tennis Credential",
-              recipients: ["Emily Reese", "Stuart Freeman"]
+              recipients: ["Emily Reese", "Stuart Freeman"],
             },
             {
               cred: "Chess Credential",
-              recipients: ["Emily Reese", "Stuart Freeman"]
-            }
-          ]
-        }
-      ]
+              recipients: ["Emily Reese", "Stuart Freeman"],
+            },
+          ],
+        },
+      ],
     });
   }
+
+  /**
+   * @return {Component}
+   */
   render() {
     return (
       <View as="div" margin="medium none none none">
@@ -65,7 +77,7 @@ class ViewCredTeacher extends React.Component {
               borderBottom: "solid",
               borderColor: "rgba(0,48,87,1)",
               borderWidth: "3px",
-              marginTop: "17px"
+              marginTop: "17px",
             }}
           ></div>
         </View>
@@ -85,12 +97,12 @@ class ViewCredTeacher extends React.Component {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {this.state.modules.map(module => (
-                <Table.Row>
+              {this.state.modules.map((module) => (
+                <Table.Row key={module.id}>
                   <Table.RowHeader>{module.name}</Table.RowHeader>
                   <Table.Cell>
                     <Select>
-                      {module.credentials.map(cred => {
+                      {module.credentials.map((cred) => {
                         <Select.Option id={cred} key={cred}>
                           {cred.cred}
                         </Select.Option>;
