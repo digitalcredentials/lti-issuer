@@ -8,7 +8,7 @@ import { TextInput } from "@instructure/ui-text-input";
 /**
  *
  */
-class CreateCred extends React.Component {
+class EnterKey extends React.Component {
   /**
    *
    */
@@ -51,4 +51,4 @@ class CreateCred extends React.Component {
   }
 }
 
-export default CreateCred;
+export default EnterKey;

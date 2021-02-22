@@ -24,6 +24,7 @@ COPY yarn.lock .
 RUN yarn install --production --no-progress --non-interactive
 
 COPY --from=builder /app/dist dist
+COPY database database 
 COPY server server 
 
 ARG app_version

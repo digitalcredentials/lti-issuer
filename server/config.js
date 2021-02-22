@@ -35,6 +35,14 @@ config.passportStrategy = "lti";
 config.sentryDSN = getEnvVarOrNull("SENTRY_DSN");
 config.trustProxy = getEnvVarOrDefault("TRUST_PROXY", "loopback");
 
+config.database = {
+  host: getEnvVarOrDefault("DB_HOST", "localhost"),
+  port: getEnvVarOrDefault("DB_PORT", 5432),
+  user: getEnvVarOrDefault("DB_USER", "ltiadmin"),
+  name: getEnvVarOrDefault("DB_NAME", "ltiissuer"),
+  password: getEnvVarOrNull("DB_PASSWORD"),
+};
+
 if (process.env.NODE_ENV === "development") {
   config.logLevel = "debug";
 }

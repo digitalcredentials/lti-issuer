@@ -49,6 +49,12 @@ const requests = {
 
 const getContext = () => requests.get(`/context/`);
 
+const getAPIKey = () => requests.get("/apiKey");
+
+const setAPIKey = (key) => requests.post("/apiKey", { key });
+
 export default {
   getContext,
+  getAPIKey,
+  setAPIKey,
 };

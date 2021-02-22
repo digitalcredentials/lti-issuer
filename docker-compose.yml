@@ -24,6 +24,7 @@ services:
       TRUST_PROXY: uniquelocal
       LTI_KEY: $LTI_KEY
       LTI_SECRET: $LTI_SECRET
+      DB_HOST: db
     labels:
       - "traefik.http.routers.web.rule=Host(`dev.127.0.0.1.xip.io`)"
       - "traefik.http.routers.web.tls=true"

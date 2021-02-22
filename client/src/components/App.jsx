@@ -10,6 +10,7 @@ import GTCredInfo from "./GTCredInfo";
 import CreateCred from "./CreateCred";
 import ClaimCred from "./ClaimCred";
 import ListCred from "./ListCred";
+import EnterKey from "./EnterKey";
 
 /** App top-level component */
 class App extends React.Component {
@@ -20,6 +21,7 @@ class App extends React.Component {
       gotContext: false,
       versionInfo: null,
       context: null,
+      apiKey: null,
     };
   }
 
@@ -47,6 +49,9 @@ class App extends React.Component {
         this.setState({ versionInfo: response.data.version });
         this.setState({ context: response.context });
       }
+      agent.getAPIKey().then((apiKey) => {
+        this.setState({ apiKey });
+      });
     });
   }
 
@@ -60,11 +65,9 @@ class App extends React.Component {
           <div>
             <code>{JSON.stringify(this.state.context)}</code>
             <GTCredInfo />
-            {this.state.context.roles.includes("Instructor") ? (
-              <ViewCredTeacher />
-            ) : (
-              <ViewCredStudent />
-            )}
+            {this.state.apiKey === false ? <EnterKey /> : null}
+            <ViewCredTeacher />
+            <ViewCredStudent />
             <ListCred />
             <CreateCred />
             <ClaimCred />
