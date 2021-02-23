@@ -8,6 +8,10 @@ const app = require("../server");
 const http = require("http");
 const logger = require("../lib/logger");
 
+process.on("unhandledRejection", (reason, p) => {
+  logger.warn({ p, reason }, "Unhandled Rejection");
+});
+
 /**
  * Get port from environment and store in Express.
  */

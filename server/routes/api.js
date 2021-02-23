@@ -5,6 +5,7 @@ const jwtMiddleware = require("../lib/jwt");
 const createContext = require("../lib/util").createContext;
 const Keys = require("../dataLayer/Keys");
 const Placements = require("../dataLayer/Placements");
+const Creds = require("../dataLayer/Creds");
 
 /**
  * @return {string}
@@ -25,10 +26,8 @@ router.get("/context", (req, res, next) => {
   });
 });
 
-router.get("/apiKey", (req, res, next) => {
-  Keys.getUserKey(req.user.user_id).then((keys) =>
-    res.send(keys.length > 0 ? keys[0] : false)
-  );
+router.get("/hasApiKey", (req, res, next) => {
+  Keys.getUserKey(req.user.user_id).then((key) => res.send({ apiKey: !!key }));
 });
 
 router.post("/apiKey", (req, res, next) => {
@@ -42,9 +41,15 @@ router.get("/placement", (req, res, next) => {
 });
 
 router.post("/placement", (req, res, next) => {
-  Placements.setPlacement(req.user.context_id, req.body.issuanceId).then(() =>
-    res.send()
-  );
+  Placements.setPlacement(
+    req.user.context_id,
+    req.body.issuanceId,
+    req.user.user_id
+  ).then(() => res.send());
+});
+
+router.get("/credentials", (req, res, next) => {
+  Creds.getCreds(req.user.user_id).then((creds) => res.send(creds));
 });
 
 module.exports = router;

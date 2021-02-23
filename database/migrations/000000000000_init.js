@@ -7,8 +7,10 @@ exports.up = function (knex) {
     })
     .createTable("placements", (table) => {
       table.string("placement_id").notNullable().unique();
+      table.string("owner_id").notNullable();
       table.string("issuance_id").notNullable();
       table.unique("placement_id", "issuance_id");
+      table.unique("placement_id", "owner_id");
       table.timestamps(true, true);
     });
 };

@@ -1,26 +1,26 @@
-import superagent from "superagent";
-import Keys from "./Keys";
+const superagent = require("superagent");
+const Keys = require("./Keys");
 const config = require("../config.js").credadmin;
 
 const Creds = {};
 
 const requests = {
   get: (userId, path) =>
-    Keys.getUserKey(userId).then((keys) => {
+    Keys.getUserKey(userId).then((key) =>
       superagent
         .get(`${config.url}${path}`)
-        .set("Authorization", `Bearer ${keys[0]}`)
-        .then((res) => res.body);
-    }),
+        .set("Authorization", `Bearer ${key}`)
+        .then((res) => res.body)
+    ),
   post: (userId, path, body) =>
-    Keys.getUserKey(userId).then((keys) => {
+    Keys.getUserKey(userId).then((key) =>
       superagent
         .post(`${config.url}${path}`)
-        .set("Authorization", `Bearer ${keys[0]}`)
+        .set("Authorization", `Bearer ${key}`)
         .set("Content-Type", "application/json")
         .send(body)
-        .then((res) => res.body);
-    }),
+        .then((res) => res.body)
+    ),
 };
 
 Creds.getCreds = (userId) => requests.get(userId, "/credentials");

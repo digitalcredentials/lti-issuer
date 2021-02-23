@@ -19,10 +19,7 @@ class GTCredInfo extends React.Component {
   /**
    *
    */
-  componentDidMount() {
-    // TODO: suff
-    console.log("GTCredInfo mounted");
-  }
+  componentDidMount() {}
 
   /**
    * @return {Component}

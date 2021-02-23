@@ -4,6 +4,7 @@ import { Text } from "@instructure/ui-text";
 import { Button } from "@instructure/ui-buttons";
 import { FormFieldGroup } from "@instructure/ui-form-field";
 import { TextInput } from "@instructure/ui-text-input";
+import { PropTypes } from "prop-types";
 
 /**
  *
@@ -15,11 +16,24 @@ class EnterKey extends React.Component {
   constructor() {
     super();
     this.state = {
-      value: "value",
+      keyinput: null,
     };
+    this.getValue = this.getValue.bind(this);
   }
 
   /**
+   * @param {String} e
+   */
+  getValue(e) {
+    const value = e.target.value;
+    const name = e.target.name;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  /**
+   * @param {Props} props
    * @return {Component}
    */
   render() {
@@ -38,10 +52,19 @@ class EnterKey extends React.Component {
         </View>
         <View as="div" textAlign="start" padding="medium medium none medium">
           <FormFieldGroup rowSpacing="small" layout="inline" vAlign="middle">
-            <TextInput label="API Key" />
+            <TextInput
+              label="API Key"
+              onChange={this.getValue}
+              name="keyinput"
+            />
           </FormFieldGroup>
           <View display="block" padding="medium none">
-            <Button display="block" textAlign="center" color="success">
+            <Button
+              display="block"
+              textAlign="center"
+              color="success"
+              onClick={() => this.props.setAPIKey(this.state.keyinput)}
+            >
               Submit
             </Button>
           </View>
@@ -50,5 +73,9 @@ class EnterKey extends React.Component {
     );
   }
 }
+
+EnterKey.propTypes = {
+  setAPIKey: PropTypes.func,
+};
 
 export default EnterKey;

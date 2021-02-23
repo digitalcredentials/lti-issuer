@@ -19,16 +19,15 @@ const getRole = (userRoles) => {
     }
   });
 
-  if (isInstructor && isLearner) return "both";
-  if (isLearner) return "learner";
   if (isInstructor) return "instructor";
+  if (isLearner) return "learner";
   return "unknown";
 };
 
 module.exports = {
   createContext: (user) => ({
-    courseId: user.custom_canvas_course_id || null,
-    userId: user.custom_lis_user_username || null,
+    contextId: user.context_id || null,
+    userId: user.user_id || null,
     userRole: getRole(user.roles),
     fullContext: user,
   }),

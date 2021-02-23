@@ -45,6 +45,7 @@
     "@instructure/ui-link": "^7.3.2",
     "@instructure/ui-list": "^7.3.2",
     "@instructure/ui-select": "^7.3.2",
+    "@instructure/ui-simple-select": "^7.4.0",
     "@instructure/ui-table": "^7.3.2",
     "@instructure/ui-text": "^7.3.2",
     "@instructure/ui-text-area": "^7.3.2",
