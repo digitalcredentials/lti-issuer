@@ -3,7 +3,7 @@ import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { Table } from "@instructure/ui-table";
 import { Button } from "@instructure/ui-buttons";
-import { Select } from "@instructure/ui-select";
+import { SimpleSelect } from "@instructure/ui-simple-select";
 
 /**
  * similar to ViewCredStudent but will show recipient lists
@@ -101,13 +101,13 @@ class ViewCredTeacher extends React.Component {
                 <Table.Row key={module.id}>
                   <Table.RowHeader>{module.name}</Table.RowHeader>
                   <Table.Cell>
-                    <Select>
+                    <SimpleSelect>
                       {module.credentials.map((cred) => {
-                        <Select.Option id={cred} key={cred}>
+                        <SimpleSelect.Option id={cred} key={cred}>
                           {cred.cred}
-                        </Select.Option>;
+                        </SimpleSelect.Option>;
                       })}
-                    </Select>
+                    </SimpleSelect>
                   </Table.Cell>
                   <Table.Cell>
                     <Button size="small" margin="small small small none">

@@ -6,9 +6,9 @@ import { PropTypes } from "prop-types";
 import agent from "../agent";
 
 /**
- * similar to ViewCredTeacher but will show status of credential
+ *
  */
-class SelectCredential extends React.Component {
+class SelectIssuance extends React.Component {
   /**
    *
    */
@@ -22,8 +22,8 @@ class SelectCredential extends React.Component {
    *
    */
   componentDidMount() {
-    agent.getCredentials().then((credentials) => {
-      this.setState({ credentials });
+    agent.getIssuances(this.props.credentialId).then((issuances) => {
+      this.setState({ issuances });
     });
   }
 
@@ -42,7 +42,7 @@ class SelectCredential extends React.Component {
     return (
       <View as="div" margin="medium none none none">
         <View as="div" textAlign="start" padding="medium medium none medium">
-          <Text size="large">Select a Credential</Text>
+          <Text size="large">Select an Issuance</Text>
           <div
             style={{
               borderBottom: "solid",
@@ -53,19 +53,23 @@ class SelectCredential extends React.Component {
           ></div>
         </View>
         <View as="div" textAlign="start" padding="medium medium none medium">
-          {this.state.credentials ? (
+          {this.state.issuances ? (
             <SimpleSelect
               onChange={this.handleSelect}
               value={this.state.selected}
               placeholder=""
             >
-              {this.state.credentials.map((cred) => (
-                <SimpleSelect.Option id={cred.id} key={cred.id} value={cred.id}>
-                  {cred.title}
+              {this.state.issuances.map((issuance) => (
+                <SimpleSelect.Option
+                  id={issuance.id}
+                  key={issuance.id}
+                  value={issuance.id}
+                >
+                  {issuance.name} - {issuance.issueDate}
                 </SimpleSelect.Option>
               ))}
               <SimpleSelect.Option id="new" value="new">
-                Create Credential
+                Create Issuance
               </SimpleSelect.Option>
             </SimpleSelect>
           ) : null}
@@ -75,8 +79,9 @@ class SelectCredential extends React.Component {
   }
 }
 
-SelectCredential.propTypes = {
+SelectIssuance.propTypes = {
+  credentialId: PropTypes.number,
   onSelect: PropTypes.func,
 };
 
-export default SelectCredential;
+export default SelectIssuance;

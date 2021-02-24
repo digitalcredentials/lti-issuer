@@ -64,10 +64,13 @@ const getPlacement = () => requests.get("/placement");
 
 const getCredentials = () => requests.get("/credentials");
 
+const getGroups = () => requests.get("/groups");
+
 export default {
   getContext,
   hasAPIKey,
   setAPIKey,
   getPlacement,
   getCredentials,
+  getGroups,
 };

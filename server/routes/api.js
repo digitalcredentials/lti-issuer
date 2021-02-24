@@ -52,4 +52,8 @@ router.get("/credentials", (req, res, next) => {
   Creds.getCreds(req.user.user_id).then((creds) => res.send(creds));
 });
 
+router.get("/groups", (req, res, next) => {
+  Creds.getGroups(req.user.user_id).then((groups) => res.send(groups));
+});
+
 module.exports = router;
