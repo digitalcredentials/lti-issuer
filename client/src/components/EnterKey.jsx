@@ -33,7 +33,6 @@ class EnterKey extends React.Component {
   }
 
   /**
-   * @param {Props} props
    * @return {Component}
    */
   render() {
