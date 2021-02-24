@@ -29,7 +29,7 @@ module.exports = {
     contextId: user.context_id || null,
     userId: user.user_id || null,
     userRole: getRole(user.roles),
-    fullContext: user,
+    // fullContext: user,
   }),
   parseQueryParameters: (headers) => {
     // match / or ? or both at the start of the location string, and remove.
