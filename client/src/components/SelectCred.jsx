@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
+import { PropTypes } from "prop-types";
 import agent from "../agent";
 
 /**
@@ -13,7 +14,8 @@ class SelectCredential extends React.Component {
    */
   constructor() {
     super();
-    this.state = {};
+    this.state = { value: null };
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   /**
@@ -23,6 +25,14 @@ class SelectCredential extends React.Component {
     agent.getCredentials().then((credentials) => {
       this.setState({ credentials });
     });
+  }
+
+  /**
+   * @param {Event} e
+   */
+  handleSelect(e, { id, value }) {
+    this.setState({ value });
+    this.props.onSelect(value);
   }
 
   /**
@@ -44,13 +54,17 @@ class SelectCredential extends React.Component {
         </View>
         <View as="div" textAlign="start" padding="medium medium none medium">
           {this.state.credentials ? (
-            <SimpleSelect>
+            <SimpleSelect
+              onChange={this.handleSelect}
+              value={this.state.selected}
+              placeholder=""
+            >
               {this.state.credentials.map((cred) => {
-                <SimpleSelect.Option id={cred.id} key={cred.id}>
+                <SimpleSelect.Option id={cred.id} key={cred.id} value={cred.id}>
                   {cred.title}
                 </SimpleSelect.Option>;
               })}
-              <SimpleSelect.Option id="new">
+              <SimpleSelect.Option id="new" value="new">
                 Create Credential
               </SimpleSelect.Option>
             </SimpleSelect>
@@ -60,5 +74,9 @@ class SelectCredential extends React.Component {
     );
   }
 }
+
+SelectCredential.propTypes = {
+  onSelect: PropTypes.func,
+};
 
 export default SelectCredential;
