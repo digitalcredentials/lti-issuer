@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
+import { IconAddSolid } from "@instructure/ui-icons";
 import { PropTypes } from "prop-types";
 import agent from "../agent";
 
@@ -64,7 +65,11 @@ class SelectCredential extends React.Component {
                   {cred.title}
                 </SimpleSelect.Option>
               ))}
-              <SimpleSelect.Option id="new" value="new">
+              <SimpleSelect.Option
+                id="new"
+                value="new"
+                renderBeforeLabel={<IconAddSolid />}
+              >
                 Create Credential
               </SimpleSelect.Option>
             </SimpleSelect>
