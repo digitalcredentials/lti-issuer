@@ -4,6 +4,7 @@ import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
 import { IconAddSolid } from "@instructure/ui-icons";
 import { PropTypes } from "prop-types";
+import moment from "moment-timezone";
 import agent from "../agent";
 
 /**
@@ -59,7 +60,7 @@ class SelectIssuance extends React.Component {
               renderLabel="Select an Issuance"
               onChange={this.handleSelect}
               value={this.state.selected}
-              placeholder=""
+              defaultValue="new"
             >
               {this.state.issuances.map((issuance) => (
                 <SimpleSelect.Option
@@ -67,7 +68,7 @@ class SelectIssuance extends React.Component {
                   key={issuance.id}
                   value={issuance.id.toString(10)}
                 >
-                  {issuance.name} - {issuance.issueDate}
+                  {issuance.name} - {this.formatDate(issuance.issueDate)}
                 </SimpleSelect.Option>
               ))}
               <SimpleSelect.Option
@@ -82,6 +83,22 @@ class SelectIssuance extends React.Component {
         </View>
       </View>
     );
+  }
+
+  /**
+   * Format an isodate for display
+   *
+   * @param {String} inputDate
+   * @return {String}
+   */
+  formatDate(inputDate) {
+    const date = moment.tz(
+      inputDate,
+      [moment.ISO_8601, "llll", "LLLL", "lll", "ll", "LL", "l", "L"],
+      "en",
+      "UTC"
+    );
+    return `${date.format("MMMM")} ${date.format("D")}, ${date.format("YYYY")}`;
   }
 }
 

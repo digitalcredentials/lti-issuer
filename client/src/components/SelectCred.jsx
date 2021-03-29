@@ -59,7 +59,7 @@ class SelectCredential extends React.Component {
               renderLabel="Select a Credential"
               onChange={this.handleSelect}
               value={this.state.selected}
-              placeholder=""
+              defaultValue="new"
             >
               {this.state.credentials.map((cred) => (
                 <SimpleSelect.Option
