@@ -56,12 +56,17 @@ class SelectCredential extends React.Component {
         <View as="div" textAlign="start" padding="medium medium none medium">
           {this.state.credentials ? (
             <SimpleSelect
+              renderLabel="Select a Credential"
               onChange={this.handleSelect}
               value={this.state.selected}
               placeholder=""
             >
               {this.state.credentials.map((cred) => (
-                <SimpleSelect.Option id={cred.id} key={cred.id} value={cred.id}>
+                <SimpleSelect.Option
+                  id={cred.id.toString(10)}
+                  key={cred.id}
+                  value={cred.id.toString(10)}
+                >
                   {cred.title}
                 </SimpleSelect.Option>
               ))}

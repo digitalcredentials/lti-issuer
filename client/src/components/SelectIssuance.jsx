@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
+import { IconAddSolid } from "@instructure/ui-icons";
 import { PropTypes } from "prop-types";
 import agent from "../agent";
 
@@ -55,20 +56,25 @@ class SelectIssuance extends React.Component {
         <View as="div" textAlign="start" padding="medium medium none medium">
           {this.state.issuances ? (
             <SimpleSelect
+              renderLabel="Select an Issuance"
               onChange={this.handleSelect}
               value={this.state.selected}
               placeholder=""
             >
               {this.state.issuances.map((issuance) => (
                 <SimpleSelect.Option
-                  id={issuance.id}
+                  id={issuance.id.toString(10)}
                   key={issuance.id}
-                  value={issuance.id}
+                  value={issuance.id.toString(10)}
                 >
                   {issuance.name} - {issuance.issueDate}
                 </SimpleSelect.Option>
               ))}
-              <SimpleSelect.Option id="new" value="new">
+              <SimpleSelect.Option
+                id="new"
+                value="new"
+                renderBeforeLabel={<IconAddSolid />}
+              >
                 Create Issuance
               </SimpleSelect.Option>
             </SimpleSelect>
@@ -80,7 +86,7 @@ class SelectIssuance extends React.Component {
 }
 
 SelectIssuance.propTypes = {
-  credentialId: PropTypes.number,
+  credentialId: PropTypes.string,
   onSelect: PropTypes.func,
 };
 

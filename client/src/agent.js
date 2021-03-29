@@ -64,7 +64,15 @@ const getPlacement = () => requests.get("/placement");
 
 const getCredentials = () => requests.get("/credentials");
 
+const getIssuances = (credId) => requests.get(`/issuances/${credId}`);
+
 const getGroups = () => requests.get("/groups");
+
+const createCred = (groupId, title, template) =>
+  requests.post("/credential", { groupId, title, template });
+
+const createIssuance = (credentialId, name, date) =>
+  requests.post("/issuance", { credentialId, name, date });
 
 export default {
   getContext,
@@ -72,5 +80,8 @@ export default {
   setAPIKey,
   getPlacement,
   getCredentials,
+  getIssuances,
   getGroups,
+  createCred,
+  createIssuance,
 };

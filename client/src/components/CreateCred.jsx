@@ -60,30 +60,35 @@ class CreateCred extends React.Component {
    *
    */
   handleSubmit() {
-    this.props.onCreate(this.buildBadgeTemplate());
+    this.props.onCreate(
+      this.state.group,
+      this.state.title,
+      this.buildBadgeTemplate()
+    );
   }
 
   /**
    * @return {Object}
    */
   buildBadgeTemplate() {
-    // TODO fix assertion, badgeclass, and image
+    // TODO fix image
     return {
       "@context": [
         "https://www.w3.org/2018/credentials/v1",
-        "https://w3c-ccg.github.io/lds-jws2020/contexts/lds-jws2020-v1.json",
-        "https://w3c-ccg.github.io/vc-ed-models/contexts/v1/context.json",
+        "https://w3id.org/security/jws/v1",
+        "https://w3id.org/dcc/v1",
       ],
-      id: "https://example.com/assertions/1001",
+      id: "{{AWARD_URL}}",
       type: ["VerifiableCredential", "Assertion"],
       issuer: {
         id: "{{ISSUER_DID}}",
+        name: "{{ISSUER_NAME}}",
       },
       issuanceDate: "{{DATE}}",
       credentialSubject: {
         id: "{{RECIPIENT_DID}}",
         hasCredential: {
-          id: "https://example.com/badgeclasses/123",
+          id: "{{ISSUANCE_URL}}",
           type: "BadgeClass",
           name: this.state.title,
           image: "data:image/png;base64,...",

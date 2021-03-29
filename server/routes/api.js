@@ -52,8 +52,36 @@ router.get("/credentials", (req, res, next) => {
   Creds.getCreds(req.user.user_id).then((creds) => res.send(creds));
 });
 
+router.get("/issuances/:credId", (req, res, next) => {
+  Creds.getIssuances(req.user.user_id, req.params.credId).then((issuances) =>
+    res.send(issuances)
+  );
+});
+
 router.get("/groups", (req, res, next) => {
   Creds.getGroups(req.user.user_id).then((groups) => res.send(groups));
 });
+
+router.post("/credential", (req, res, next) => {
+  Creds.createCred(
+    req.user.user_id,
+    req.body.groupId,
+    req.body.title,
+    req.body.template
+  ).then((cred) => res.send(cred));
+});
+
+router.post(
+  "/issuance",
+  (
+    { user: { user_id: userId }, body: { credentialId, name, date } },
+    res,
+    next
+  ) => {
+    Creds.createIssuance(userId, credentialId, name, date).then((issuance) =>
+      res.send(issuance)
+    );
+  }
+);
 
 module.exports = router;

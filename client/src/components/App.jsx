@@ -28,6 +28,8 @@ class App extends React.Component {
     this.setAPIKey = this.setAPIKey.bind(this);
     this.selectCred = this.selectCred.bind(this);
     this.createCred = this.createCred.bind(this);
+    this.selectIssuance = this.selectIssuance.bind(this);
+    this.createIssuance = this.createIssuance.bind(this);
   }
 
   /**
@@ -43,11 +45,14 @@ class App extends React.Component {
   /**
    * Create a credential for this placement
    *
-   * @param {Credential} cred
+   * @param {Number} groupId
+   * @param {String} title
+   * @param {Credential} template
    */
-  createCred(cred) {
-    console.log(cred);
-    agent.createCred(cred).then((created) => this.selectCred(created.id));
+  createCred(groupId, title, template) {
+    agent
+      .createCred(groupId, title, template)
+      .then((created) => this.selectCred(created.id));
   }
 
   /**
@@ -57,6 +62,27 @@ class App extends React.Component {
    */
   selectCred(credentialId) {
     this.setState({ credentialId });
+  }
+
+  /**
+   * Select the issuance for this placement
+   *
+   * @param {Number|"new"} issuanceId
+   */
+  selectIssuance(issuanceId) {
+    this.setState({ issuanceId });
+  }
+
+  /**
+   * Create an issuance for this placement
+   *
+   * @param {String} name
+   * @param {String} date
+   */
+  createIssuance(name, date) {
+    agent
+      .createIssuance(this.state.credentialId, name, date)
+      .then((created) => this.selectIssuance(created.id));
   }
 
   /**
@@ -101,7 +127,7 @@ class App extends React.Component {
           <div>
             <code>{JSON.stringify(this.state.context)}</code>
             <GTCredInfo />
-            {"instructor" === this.state.userRole ? (
+            {"instructor" === this.state.context.userRole ? (
               <>
                 {this.state.apiKey === false ? (
                   <EnterKey setAPIKey={this.setAPIKey} />
@@ -112,9 +138,13 @@ class App extends React.Component {
                 {"new" === this.state.credentialId ? (
                   <CreateCred onCreate={this.createCred} />
                 ) : null}
-                {typeof this.state.credentialId === "number" &&
+                {this.state.credentialId &&
+                this.state.credentialId !== "new" &&
                 !this.state.issuanceId ? (
-                  <SelectIssuance credentialId={this.state.credentialId} />
+                  <SelectIssuance
+                    credentialId={this.state.credentialId}
+                    onSelect={this.selectIssuance}
+                  />
                 ) : null}
                 {"new" === this.state.issuanceId ? (
                   <CreateIssuance
@@ -122,7 +152,7 @@ class App extends React.Component {
                     onCreate={this.createIssuance}
                   />
                 ) : null}
-                {typeof this.state.issuanceId === "number" ? (
+                {this.state.issuanceId && this.state.issuanceId !== "new" ? (
                   <ListCred issuanceId={this.state.issuanceId} />
                 ) : null}
               </>

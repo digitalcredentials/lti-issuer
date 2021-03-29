@@ -1355,6 +1355,25 @@
     classnames "^2"
     prop-types "^15"
 
+"@instructure/ui-calendar@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-calendar/-/ui-calendar-7.4.0.tgz#868e6756d43922ac1b9914b734b10e665476b3da"
+  integrity sha512-T3omgQfU/la+Va8JHtgW3HsgUAmLfQfJxc7tm9wAWQWULQtLEuwTBpF6B77fgstgyH4I1AOSKSsPK6FThXHAVw==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/console" "^7.4.0"
+    "@instructure/ui-a11y-content" "^7.4.0"
+    "@instructure/ui-i18n" "^7.4.0"
+    "@instructure/ui-prop-types" "^7.4.0"
+    "@instructure/ui-react-utils" "^7.4.0"
+    "@instructure/ui-testable" "^7.4.0"
+    "@instructure/ui-themeable" "^7.4.0"
+    "@instructure/ui-utils" "^7.4.0"
+    "@instructure/ui-view" "^7.4.0"
+    "@instructure/uid" "^7.4.0"
+    classnames "^2"
+    prop-types "^15"
+
 "@instructure/ui-checkbox@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@instructure/ui-checkbox/-/ui-checkbox-7.1.1.tgz#ada839030b29c7925406fabaf19ff36d8fd2ca15"
@@ -1447,6 +1466,26 @@
     "@instructure/ui-text-input" "^7.1.1"
     "@instructure/ui-themeable" "^7.1.1"
     "@instructure/ui-utils" "^7.1.1"
+    prop-types "^15"
+
+"@instructure/ui-date-input@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-date-input/-/ui-date-input-7.4.0.tgz#4a9387cc5208f33f86c41fecbe04fad2b763362e"
+  integrity sha512-NwIBXQCQJ5pU8KNvuGqabO+RHfnE/yKg8/Z9UoN6WaT260am6OeA/xmISXi2j0ZXYkh7BcKDPr8EdfPh0oBlBQ==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
+    "@instructure/ui-calendar" "^7.4.0"
+    "@instructure/ui-form-field" "^7.4.0"
+    "@instructure/ui-icons" "^7.4.0"
+    "@instructure/ui-popover" "^7.4.0"
+    "@instructure/ui-position" "^7.4.0"
+    "@instructure/ui-prop-types" "^7.4.0"
+    "@instructure/ui-react-utils" "^7.4.0"
+    "@instructure/ui-selectable" "^7.4.0"
+    "@instructure/ui-testable" "^7.4.0"
+    "@instructure/ui-text-input" "^7.4.0"
+    "@instructure/ui-themeable" "^7.4.0"
+    "@instructure/ui-utils" "^7.4.0"
     prop-types "^15"
 
 "@instructure/ui-decorator@^7.1.1":
@@ -9039,6 +9078,13 @@ moment-timezone@^0.5:
   version "0.5.31"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.31.tgz#9c40d8c5026f0c7ab46eda3d63e49c155148de05"
   integrity sha512-+GgHNg8xRhMXfEbv81iDtrVeTcWt0kWmTEY1XQK14dICTXnWJnT0dxdlPspwqF3keKMVPXwayEsk1DI0AA/jdA==
+  dependencies:
+    moment ">= 2.9.0"
+
+moment-timezone@^0.5.33:
+  version "0.5.33"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.33.tgz#b252fd6bb57f341c9b59a5ab61a8e51a73bbd22c"
+  integrity sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==
   dependencies:
     moment ">= 2.9.0"
 

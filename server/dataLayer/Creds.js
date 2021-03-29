@@ -25,7 +25,15 @@ const requests = {
 
 Creds.getCreds = (userId) => requests.get(userId, "/credentials");
 Creds.getIssuances = (userId, credId) =>
-  requests.get(userId, `/credentials/${credId}`);
+  requests
+    .get(userId, `/issuances/${credId}`)
+    .catch((err) =>
+      err.status && err.status === 404 ? [] : Promise.reject(err)
+    );
 Creds.getGroups = (userId) => requests.get(userId, "/groups");
+Creds.createCred = (userId, groupid, title, template) =>
+  requests.post(userId, "/credentials", { groupid, title, template });
+Creds.createIssuance = (userId, credId, name, issueDate) =>
+  requests.post(userId, `/issuances/${credId}`, { name, issueDate });
 
 module.exports = Creds;
