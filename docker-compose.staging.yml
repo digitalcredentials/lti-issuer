@@ -40,7 +40,7 @@ services:
       - "3000"
 
   cred-admin:
-    image: digcred/cred-admin
+    image: digcreds/cred-admin
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
     labels:
