@@ -74,6 +74,9 @@ const createCred = (groupId, title, template) =>
 const createIssuance = (credentialId, name, date) =>
   requests.post("/issuance", { credentialId, name, date });
 
+const setPlacement = (issuanceId) =>
+  requests.post("/placement", { issuanceId });
+
 export default {
   getContext,
   hasAPIKey,
@@ -84,4 +87,5 @@ export default {
   getGroups,
   createCred,
   createIssuance,
+  setPlacement,
 };

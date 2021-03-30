@@ -71,6 +71,7 @@ class App extends React.Component {
    */
   selectIssuance(issuanceId) {
     this.setState({ issuanceId });
+    agent.setPlacement(issuanceId);
   }
 
   /**
@@ -111,7 +112,9 @@ class App extends React.Component {
         this.state.apiKey
           ? agent
               .getPlacement()
-              .then((issuanceId) => this.setState({ issuanceId }))
+              .then(({ issuance_id: issuanceId }) =>
+                this.setState({ issuanceId })
+              )
           : null;
       });
     });
@@ -132,7 +135,9 @@ class App extends React.Component {
                 {this.state.apiKey === false ? (
                   <EnterKey setAPIKey={this.setAPIKey} />
                 ) : null}
-                {this.state.apiKey && !this.state.credentialId ? (
+                {this.state.apiKey &&
+                !this.state.credentialId &&
+                !this.state.issuanceId ? (
                   <SelectCred onSelect={this.selectCred} />
                 ) : null}
                 {"new" === this.state.credentialId ? (

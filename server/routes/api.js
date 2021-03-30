@@ -6,6 +6,7 @@ const createContext = require("../lib/util").createContext;
 const Keys = require("../dataLayer/Keys");
 const Placements = require("../dataLayer/Placements");
 const Creds = require("../dataLayer/Creds");
+const util = require("../lib/util");
 
 /**
  * @return {string}
@@ -83,5 +84,16 @@ router.post(
     );
   }
 );
+
+router.post("/placement", ({ user, body: { issuanceId } }, res, next) => {
+  const { contextId, userId, userRole } = util.createContext(user);
+  if (userRole === "instructor") {
+    Placements.setPlacement(contextId, issuanceId, userId).then(() =>
+      res.send()
+    );
+  } else {
+    res.status(401).send();
+  }
+});
 
 module.exports = router;
