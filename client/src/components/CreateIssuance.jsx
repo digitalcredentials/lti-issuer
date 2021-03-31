@@ -13,7 +13,7 @@ import {
   IconArrowOpenStartSolid,
   IconArrowOpenEndSolid,
 } from "@instructure/ui-icons";
-import moment from "moment-timezone";
+import util from "../util";
 
 /**
  *
@@ -27,15 +27,14 @@ class CreateIssuance extends React.Component {
     this.state = {
       name: null,
       isShowingCalendar: false,
-      todayDate: parseDate(new Date().toISOString()),
+      todayDate: util.parseDate(new Date().toISOString()),
       selectedDate: null,
-      renderedDate: parseDate(new Date().toISOString()),
+      renderedDate: util.parseDate(new Date().toISOString()),
       messages: [],
     };
     this.getValue = this.getValue.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.generateMonth = this.generateMonth.bind(this);
-    this.formatDate = this.formatDate.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleShowCalendar = this.handleShowCalendar.bind(this);
     this.handleHideCalendar = this.handleHideCalendar.bind(this);
@@ -66,7 +65,7 @@ class CreateIssuance extends React.Component {
    * @return {Date[]}
    */
   generateMonth(renderedDate = this.state.renderedDate) {
-    const date = parseDate(renderedDate).startOf("month").startOf("week");
+    const date = util.parseDate(renderedDate).startOf("month").startOf("week");
 
     return Array.from({ length: Calendar.DAY_COUNT }, () => {
       const currentDate = date.clone();
@@ -76,19 +75,10 @@ class CreateIssuance extends React.Component {
   }
 
   /**
-   * @param {String} dateInput
-   * @return {String}
-   */
-  formatDate(dateInput) {
-    const date = parseDate(dateInput);
-    return `${date.format("MMMM")} ${date.format("D")}, ${date.format("YYYY")}`;
-  }
-
-  /**
    * @param {Event} event
    */
   handleChange(event, { value }) {
-    const newDateStr = parseDate(value).toISOString();
+    const newDateStr = util.parseDate(value).toISOString();
 
     this.setState(({ renderedDate }) => ({
       value,
@@ -111,7 +101,7 @@ class CreateIssuance extends React.Component {
   handleHideCalendar(event) {
     this.setState(({ selectedDate, value }) => ({
       isShowingCalendar: false,
-      value: selectedDate ? this.formatDate(selectedDate) : value,
+      value: selectedDate ? util.formatDate(selectedDate) : value,
     }));
   }
 
@@ -190,12 +180,12 @@ class CreateIssuance extends React.Component {
       // the currently rendered month instead.
       const newDate = selectedDate
         ? this.modifyDate(selectedDate, type, step)
-        : parseDate(renderedDate).startOf("month").toISOString();
+        : util.parseDate(renderedDate).startOf("month").toISOString();
 
       return {
         selectedDate: newDate,
         renderedDate: newDate,
-        value: this.formatDate(newDate),
+        value: util.formatDate(newDate),
         messages: [],
       };
     });
@@ -208,7 +198,7 @@ class CreateIssuance extends React.Component {
    * @return {String}
    */
   modifyDate(dateStr, type, step) {
-    const date = parseDate(dateStr);
+    const date = util.parseDate(dateStr);
     date.add(step, type);
     return date.toISOString();
   }
@@ -217,7 +207,7 @@ class CreateIssuance extends React.Component {
    * @return {Date[]}
    */
   renderWeekdayLabels() {
-    const date = parseDate(this.state.renderedDate).startOf("week");
+    const date = util.parseDate(this.state.renderedDate).startOf("week");
 
     return Array.from({ length: 7 }, () => {
       const currentDate = date.clone();
@@ -262,7 +252,7 @@ class CreateIssuance extends React.Component {
    * @return {Component}
    */
   render() {
-    const date = parseDate(this.state.renderedDate);
+    const date = util.parseDate(this.state.renderedDate);
 
     const buttonProps = (type = "prev") => ({
       size: "small",
@@ -351,15 +341,6 @@ class CreateIssuance extends React.Component {
 
 CreateIssuance.propTypes = {
   onCreate: PropTypes.func,
-};
-
-const parseDate = (dateStr) => {
-  return moment.tz(
-    dateStr,
-    [moment.ISO_8601, "llll", "LLLL", "lll", "LLL", "ll", "LL", "l", "L"],
-    "en",
-    "UTC"
-  );
 };
 
 export default CreateIssuance;

@@ -35,5 +35,7 @@ Creds.createCred = (userId, groupid, title, template) =>
   requests.post(userId, "/credentials", { groupid, title, template });
 Creds.createIssuance = (userId, credId, name, issueDate) =>
   requests.post(userId, `/issuances/${credId}`, { name, issueDate });
+Creds.getEnrolled = (userId, issuanceId) =>
+  requests.get(userId, `/enroll/${issuanceId}`);
 
 module.exports = Creds;

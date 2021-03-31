@@ -3,6 +3,9 @@ import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { Table } from "@instructure/ui-table";
 import { Link } from "@instructure/ui-link";
+import { PropTypes } from "prop-types";
+import util from "../util";
+import agent from "../agent";
 
 /**
  * similar to ViewCredTeacher but will show status of credential
@@ -23,25 +26,11 @@ class ListCred extends React.Component {
    *
    */
   componentDidMount() {
-    // particular credential and recipient info will be passed into this component via props
-    this.setState({
-      credential: "Tennis Credential",
-      recipients: [
-        {
-          name: "Chris Yang",
-          email: "cyang419@gatech.edu",
-          claimed: true,
-          approvalDate: "12/22/20",
-          issueDate: "12/27/20",
-        },
-        {
-          name: "Stuart Freeman",
-          email: "stuart@gatech.edu",
-          claimed: false,
-          approvalDate: "12/12/20",
-          issueDate: null,
-        },
-      ],
+    agent.getEnrolled(this.props.issuanceId).then((issuance) => {
+      this.setState({
+        credential: `${issuance.credential.title} - ${issuance.name}`,
+        recipients: issuance.recipients,
+      });
     });
   }
 
@@ -102,9 +91,15 @@ class ListCred extends React.Component {
                       <Text color="warning">Pending</Text>
                     )}
                   </Table.Cell>
-                  <Table.Cell>{recipient.approvalDate}</Table.Cell>
                   <Table.Cell>
-                    {recipient.issueDate ? recipient.issueDate : ""}
+                    {recipient.RecipientIssuance.isApproved
+                      ? util.formatDate(recipient.RecipientIssuance.approvedAt)
+                      : ""}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {recipient.RecipientIssuance.isIssued
+                      ? util.formatDate(recipient.RecipientIssuance.issuedAt)
+                      : ""}
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -115,5 +110,8 @@ class ListCred extends React.Component {
     );
   }
 }
+ListCred.propTypes = {
+  issuanceId: PropTypes.string,
+};
 
 export default ListCred;

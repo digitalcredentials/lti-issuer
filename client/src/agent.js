@@ -77,6 +77,8 @@ const createIssuance = (credentialId, name, date) =>
 const setPlacement = (issuanceId) =>
   requests.post("/placement", { issuanceId });
 
+const getEnrolled = (issuanceId) => requests.get(`/enrolled/${issuanceId}`);
+
 export default {
   getContext,
   hasAPIKey,
@@ -88,4 +90,5 @@ export default {
   createCred,
   createIssuance,
   setPlacement,
+  getEnrolled,
 };

@@ -96,4 +96,13 @@ router.post("/placement", ({ user, body: { issuanceId } }, res, next) => {
   }
 });
 
+router.get(
+  "/enrolled/:issuanceId",
+  ({ user: { user_id: userId }, params: { issuanceId } }, res, next) => {
+    Creds.getEnrolled(userId, issuanceId).then((issuance) =>
+      res.send(issuance)
+    );
+  }
+);
+
 module.exports = router;
