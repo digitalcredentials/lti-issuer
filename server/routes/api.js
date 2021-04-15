@@ -36,17 +36,11 @@ router.post("/apiKey", (req, res, next) => {
 });
 
 router.get("/placement", (req, res, next) => {
-  Placements.getPlacement(req.user.context_id).then((issuanceIds) =>
-    res.send(issuanceIds.length > 0 ? issuanceIds[0] : false)
+  Placements.getPlacement(
+    req.user.context_id
+  ).then(({ issuance_id: issuanceId }) =>
+    res.send({ issuance_id: issuanceId })
   );
-});
-
-router.post("/placement", (req, res, next) => {
-  Placements.setPlacement(
-    req.user.context_id,
-    req.body.issuanceId,
-    req.user.user_id
-  ).then(() => res.send());
 });
 
 router.get("/credentials", (req, res, next) => {
@@ -101,6 +95,25 @@ router.get(
   ({ user: { user_id: userId }, params: { issuanceId } }, res, next) => {
     Creds.getEnrolled(userId, issuanceId).then((issuance) =>
       res.send(issuance)
+    );
+  }
+);
+
+router.post(
+  "/claim",
+  (
+    {
+      user: {
+        context_id: contextId,
+        lis_person_contact_email_primary: userEmail,
+        lis_person_name_full: userName,
+      },
+    },
+    res,
+    next
+  ) => {
+    Creds.claimAward(contextId, userEmail, userName).then((award) =>
+      res.send(award)
     );
   }
 );

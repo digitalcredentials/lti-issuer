@@ -79,6 +79,8 @@ const setPlacement = (issuanceId) =>
 
 const getEnrolled = (issuanceId) => requests.get(`/enrolled/${issuanceId}`);
 
+const postClaim = () => requests.post("/claim");
+
 export default {
   getContext,
   hasAPIKey,
@@ -91,4 +93,5 @@ export default {
   createIssuance,
   setPlacement,
   getEnrolled,
+  postClaim,
 };

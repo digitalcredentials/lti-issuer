@@ -71,7 +71,7 @@ class App extends React.Component {
    */
   selectIssuance(issuanceId) {
     this.setState({ issuanceId });
-    agent.setPlacement(issuanceId);
+    issuanceId === "new" ? null : agent.setPlacement(issuanceId);
   }
 
   /**
@@ -109,13 +109,9 @@ class App extends React.Component {
       this.setState({ context: response.context });
       agent.hasAPIKey().then((hasAPIKey) => {
         this.setState(hasAPIKey);
-        this.state.apiKey
-          ? agent
-              .getPlacement()
-              .then(({ issuance_id: issuanceId }) =>
-                this.setState({ issuanceId })
-              )
-          : null;
+        agent
+          .getPlacement()
+          .then(({ issuance_id: issuanceId }) => this.setState({ issuanceId }));
       });
     });
   }
@@ -159,12 +155,17 @@ class App extends React.Component {
                 ) : null}
                 {this.state.issuanceId && this.state.issuanceId !== "new" ? (
                   <ListCred issuanceId={this.state.issuanceId} />
-                ) : null}
+                ) : (
+                  <p>
+                    The instructor has not completed setting up this credential,
+                    please try again later.
+                  </p>
+                )}
               </>
             ) : (
               <>
-                {"learner" === this.state.context.userRole ? ( // &&
-                  // this.state.issuanceId ? (
+                {"learner" === this.state.context.userRole &&
+                this.state.issuanceId ? (
                   <ClaimCred />
                 ) : null}
               </>
