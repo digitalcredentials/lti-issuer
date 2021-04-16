@@ -124,7 +124,6 @@ class App extends React.Component {
       <Layout versionInfo={this.state.versionInfo || ""}>
         {this.state.context ? (
           <div>
-            <code>{JSON.stringify(this.state.context)}</code>
             <GTCredInfo />
             {"instructor" === this.state.context.userRole ? (
               <>
