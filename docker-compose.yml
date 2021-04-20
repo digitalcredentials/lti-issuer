@@ -39,6 +39,7 @@ services:
     image: digcreds/cred-admin
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
+      PUBLIC_URL: https://cred.127.0.0.1.xip.io
     labels:
       - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.xip.io`)"
       - "traefik.http.routers.credadmin.tls=true"
