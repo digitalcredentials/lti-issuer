@@ -154,19 +154,19 @@ class App extends React.Component {
                 ) : null}
                 {this.state.issuanceId && this.state.issuanceId !== "new" ? (
                   <ListCred issuanceId={this.state.issuanceId} />
-                ) : (
-                  <p>
-                    The instructor has not completed setting up this credential,
-                    please try again later.
-                  </p>
-                )}
+                ) : null}
               </>
             ) : (
               <>
                 {"learner" === this.state.context.userRole &&
                 this.state.issuanceId ? (
                   <ClaimCred />
-                ) : null}
+                ) : (
+                  <p>
+                    The instructor has not completed setting up this credential,
+                    please try again later.
+                  </p>
+                )}
               </>
             )}
           </div>
