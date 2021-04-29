@@ -13,7 +13,7 @@ const qs = require("qs");
  */
 function issueToken(req) {
   return jwt.sign(req.user, require("../config")["jwtSecret"], {
-    expiresIn: 60 * 60 * 24 * 180 /* 180 days */
+    expiresIn: 60 * 60 * 24 * 180 /* 180 days */,
   });
 }
 
@@ -39,7 +39,7 @@ router.post(
 
       res.set({
         "Cache-Control": "no-store",
-        Pragma: "no-cache"
+        Pragma: "no-cache",
       });
 
       res.redirect(`/?${qs.stringify(parameters)}`);

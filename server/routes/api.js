@@ -21,6 +21,7 @@ function getVersion() {
 router.use(jwtMiddleware);
 
 router.get("/context", (req, res, next) => {
+  console.log(JSON.stringify(req.user));
   res.send({
     context: createContext(req.user),
     data: { version: getVersion() },
@@ -37,7 +38,7 @@ router.post("/apiKey", (req, res, next) => {
 
 router.get("/placement", (req, res, next) => {
   Placements.getPlacement(
-    req.user.context_id
+    req.user.resource_link_id
   ).then(({ issuance_id: issuanceId }) =>
     res.send({ issuance_id: issuanceId })
   );
@@ -104,7 +105,7 @@ router.post(
   (
     {
       user: {
-        context_id: contextId,
+        resource_link_id: contextId,
         lis_person_contact_email_primary: userEmail,
         lis_person_name_full: userName,
       },

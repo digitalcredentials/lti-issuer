@@ -26,7 +26,7 @@ const getRole = (userRoles) => {
 
 module.exports = {
   createContext: (user) => ({
-    contextId: user.context_id || null,
+    contextId: user.resource_link_id || null,
     userId: user.user_id || null,
     userRole: getRole(user.roles),
     userEmail: user.lis_person_contact_email_primary,
