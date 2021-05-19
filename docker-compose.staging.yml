@@ -30,7 +30,7 @@ services:
       LTI_SECRET: $LTI_SECRET
       DB_HOST: db
     labels:
-      - "traefik.http.routers.web.rule=Host(`dev.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.web.rule=Host(`dev.127.0.0.1.nip.io`)"
       - "traefik.http.routers.web.tls=true"
     depends_on:
       db:
@@ -44,7 +44,7 @@ services:
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
     labels:
-      - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.xip.io`)"
+      - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.nip.io`)"
       - "traefik.http.routers.credadmin.tls=true"
     depends_on:
       db:
