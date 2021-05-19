@@ -40,6 +40,8 @@ class CreateIssuance extends React.Component {
     this.handleHideCalendar = this.handleHideCalendar.bind(this);
     this.handleValidateDate = this.handleValidateDate.bind(this);
     this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleRenderNextMonth = this.handleRenderNextMonth.bind(this);
+    this.handleRenderPrevMonth = this.handleRenderPrevMonth.bind(this);
   }
 
   /**
