@@ -85,7 +85,7 @@ class ListCred extends React.Component {
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    {recipient.claimed ? (
+                    {recipient.isIssued ? (
                       <Text color="success">Claimed</Text>
                     ) : (
                       <Text color="warning">Pending</Text>
