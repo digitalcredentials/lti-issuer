@@ -21,7 +21,7 @@ class CreateCred extends React.Component {
     super();
     this.state = {
       groups: null,
-      group: null,
+      group: "",
       title: null,
       description: null,
       criteria: null,
@@ -159,6 +159,7 @@ class CreateCred extends React.Component {
                 value={this.state.group}
                 onChange={this.handleGroupSelect}
               >
+                <SimpleSelect.Option value=""></SimpleSelect.Option>
                 {this.state.groups.map((group) => (
                   <SimpleSelect.Option
                     key={group.id}
@@ -175,6 +176,14 @@ class CreateCred extends React.Component {
                 display="block"
                 textAlign="center"
                 color="success"
+                interaction={
+                  this.state.title &&
+                  this.state.description &&
+                  this.state.criteria &&
+                  this.state.group !== ""
+                    ? "enabled"
+                    : "disabled"
+                }
                 onClick={this.handleSubmit}
               >
                 Submit

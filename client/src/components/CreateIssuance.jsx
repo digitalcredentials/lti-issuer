@@ -328,6 +328,11 @@ class CreateIssuance extends React.Component {
               display="block"
               textAlign="center"
               color="success"
+              interaction={
+                this.state.name && this.state.selectedDate
+                  ? "enabled"
+                  : "disabled"
+              }
               onClick={this.handleSubmit}
             >
               Submit

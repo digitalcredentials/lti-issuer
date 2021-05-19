@@ -62,6 +62,7 @@ class EnterKey extends React.Component {
               display="block"
               textAlign="center"
               color="success"
+              interaction={this.state.keyinput ? "enabled" : "disabled"}
               onClick={() => this.props.setAPIKey(this.state.keyinput)}
             >
               Submit
