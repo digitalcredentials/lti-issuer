@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserView, MobileView } from "react-device-detect";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { Link } from "@instructure/ui-link";
@@ -66,24 +67,42 @@ class ClaimCred extends React.Component {
           </Text>
         </View>
         <div>
-          <View as="div" textAlign="start" padding="medium medium none medium">
-            <Text size="small" color="secondary">
-              You can now claim this credential by scanning the QR code below or
-              by clicking{" "}
-              <Link href={this.state.qrLink} target="_blank">
-                here
-              </Link>
-            </Text>
-          </View>
-          <View
-            as="div"
-            width="250px"
-            height="250px"
-            textAlign="center"
-            padding="small medium none medium"
-          >
-            <Img src={this.state.qrImgSrc} constrain="contain" />
-          </View>
+          <BrowserView>
+            <View
+              as="div"
+              textAlign="start"
+              padding="medium medium none medium"
+            >
+              <Text size="small" color="secondary">
+                You can now claim this credential by scanning the QR code below.
+              </Text>
+            </View>
+            <View
+              as="div"
+              width="250px"
+              height="250px"
+              textAlign="center"
+              padding="small medium none medium"
+            >
+              <Img src={this.state.qrImgSrc} constrain="contain" />
+            </View>
+          </BrowserView>
+          <MobileView>
+            <View
+              as="div"
+              textAlign="start"
+              padding="medium medium none medium"
+            >
+              <Text size="small" color="secondary">
+                You can now claim this credential by{" "}
+                <Link href={this.state.qrLink} target="_blank">
+                  tapping this link using the mobile device containing your
+                  digital wallet
+                </Link>
+                .
+              </Text>
+            </View>
+          </MobileView>
         </div>
       </View>
     );
