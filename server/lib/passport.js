@@ -14,7 +14,7 @@ const ltiStrategy = new PassportLTIStrategy(
         // return with a single string, not a Passport verify signature
         done("Not authorized.");
       }
-    }
+    },
   },
   (ltiContext, done) => done(null, ltiContext)
 );

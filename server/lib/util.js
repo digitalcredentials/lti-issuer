@@ -31,6 +31,7 @@ module.exports = {
     userRole: getRole(user.roles),
     userEmail: user.lis_person_contact_email_primary,
     userName: user.lis_person_name_full,
+    lmsType: user.tool_consumer_info_product_family_code,
   }),
   parseQueryParameters: (headers) => {
     // match / or ? or both at the start of the location string, and remove.

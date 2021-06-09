@@ -42,7 +42,7 @@ class ClaimCred extends React.Component {
     return (
       <View as="div" margin="medium none none none" width="75%">
         <View as="div" textAlign="start" padding="none medium">
-          <Text size="large">Claim GT Cred</Text>
+          <Text size="large">Claim Credential</Text>
           <div
             style={{
               borderBottom: "solid",

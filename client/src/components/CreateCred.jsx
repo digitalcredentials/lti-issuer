@@ -117,7 +117,7 @@ class CreateCred extends React.Component {
     return (
       <View as="div" margin="medium none none none" width="75%">
         <View as="div" textAlign="start" padding="none medium">
-          <Text size="large">Create GT Cred</Text>
+          <Text size="large">Create Credential</Text>
           <div
             style={{
               borderBottom: "solid",
@@ -129,7 +129,7 @@ class CreateCred extends React.Component {
         </View>
         <View as="div" textAlign="start" padding="medium medium none medium">
           <Text size="small" color="secondary">
-            Here you can create a GT Cred
+            Here you can create a credential
           </Text>
         </View>
         {this.state.groups ? (

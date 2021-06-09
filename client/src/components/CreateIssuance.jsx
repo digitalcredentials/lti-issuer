@@ -271,7 +271,7 @@ class CreateIssuance extends React.Component {
     return (
       <View as="div" margin="medium none none none" width="75%">
         <View as="div" textAlign="start" padding="none medium">
-          <Text size="large">Create GT Cred Issuance</Text>
+          <Text size="large">Create Credential Issuance</Text>
           <div
             style={{
               borderBottom: "solid",

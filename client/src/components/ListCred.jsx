@@ -41,6 +41,12 @@ class ListCred extends React.Component {
     return (
       <View as="div" margin="medium none none none">
         <View as="div" textAlign="start" padding="medium medium none medium">
+          {this.state.recipients.length <= 0 ? (
+            <Text as="div">
+              Once students have earned this credential, their names will begin
+              appearing in the list below.
+            </Text>
+          ) : null}
           <Text size="large" color="secondary">
             Recipients for:{" "}
           </Text>

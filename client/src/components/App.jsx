@@ -4,7 +4,7 @@ import qs from "qs";
 import { Spinner, View } from "@instructure/ui";
 import agent from "../agent";
 import Layout from "./Layout";
-import GTCredInfo from "./GTCredInfo";
+import Instructions from "./Instructions";
 import CreateCred from "./CreateCred";
 import ClaimCred from "./ClaimCred";
 import ListCred from "./ListCred";
@@ -100,7 +100,7 @@ class App extends React.Component {
 
     if (analyticsId) {
       ReactGA.initialize(analyticsId);
-      ReactGA.set({ title: "GT Cred" });
+      ReactGA.set({ title: "Verifiable Credentials LTI" });
       ReactGA.pageview(window.location.pathname);
     }
 
@@ -124,7 +124,10 @@ class App extends React.Component {
       <Layout versionInfo={this.state.versionInfo || ""}>
         {this.state.context ? (
           <div>
-            <GTCredInfo />
+            <Instructions
+              role={this.state.context.userRole}
+              lmsType={this.state.context.lmsType}
+            />
             {"instructor" === this.state.context.userRole ? (
               <>
                 {this.state.apiKey === false ? (
