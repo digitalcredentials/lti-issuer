@@ -2,10 +2,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
-const instructureUiConfig = require("@instructure/ui-webpack-config");
-
 module.exports = {
-  ...instructureUiConfig,
   context: path.resolve(__dirname, "client/src"),
   entry: {
     app: "./index.jsx",
@@ -19,22 +16,18 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
+        resolve: { extensions: [".js", ".jsx"] },
         use: {
           loader: "babel-loader",
         },
       },
-      ...instructureUiConfig.module.rules,
     ],
   },
   plugins: [
-    ...instructureUiConfig.plugins,
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HTMLWebpackPlugin({
       template: "index.html",
     }),
   ],
   resolve: { extensions: [".js", ".jsx"] },
-  resolveLoader: {
-    alias: { ...instructureUiConfig.resolveLoader.alias },
-  },
 };
