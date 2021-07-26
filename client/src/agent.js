@@ -52,6 +52,12 @@ const requests = {
       .send(body)
       .then(handleErrors)
       .then(responseBody),
+  delete: (url) =>
+    superagent
+      .delete(`${API_ROOT}${url}`)
+      .use(tokenPlugin)
+      .then(handleErrors)
+      .then(responseBody),
 };
 
 const getContext = () => requests.get(`/context/`);
@@ -61,6 +67,8 @@ const hasAPIKey = () => requests.get("/hasApiKey");
 const setAPIKey = (key) => requests.post("/apiKey", { key });
 
 const getPlacement = () => requests.get("/placement");
+
+const resetPlacement = () => requests.delete(`/placement`);
 
 const getCredentials = () => requests.get("/credentials");
 
@@ -86,6 +94,7 @@ export default {
   hasAPIKey,
   setAPIKey,
   getPlacement,
+  resetPlacement,
   getCredentials,
   getIssuances,
   getGroups,

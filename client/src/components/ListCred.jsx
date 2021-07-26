@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
+import { Button } from "@instructure/ui-buttons";
 import { Table } from "@instructure/ui-table";
 import { Link } from "@instructure/ui-link";
 import { PropTypes } from "prop-types";
@@ -47,10 +48,13 @@ class ListCred extends React.Component {
               appearing in the list below.
             </Text>
           ) : null}
-          <Text size="large" color="secondary">
-            Recipients for:{" "}
-          </Text>
-          <Text size="large">{this.state.credential}</Text>
+          <div style={{ display: "flex", "justify-content": "space-between" }}>
+            <Text size="large" color="secondary">
+              Recipients for:{" "}
+            </Text>
+            <Text size="large">{this.state.credential}</Text>
+            <Button onClick={this.props.onReconfigure}>Reconfigure</Button>
+          </div>
           <div
             style={{
               borderBottom: "solid",
@@ -118,6 +122,7 @@ class ListCred extends React.Component {
 }
 ListCred.propTypes = {
   issuanceId: PropTypes.string,
+  onReconfigure: PropTypes.function,
 };
 
 export default ListCred;

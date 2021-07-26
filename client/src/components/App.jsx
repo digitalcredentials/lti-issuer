@@ -30,6 +30,7 @@ class App extends React.Component {
     this.createCred = this.createCred.bind(this);
     this.selectIssuance = this.selectIssuance.bind(this);
     this.createIssuance = this.createIssuance.bind(this);
+    this.resetPlacement = this.resetPlacement.bind(this);
   }
 
   /**
@@ -87,6 +88,15 @@ class App extends React.Component {
   }
 
   /**
+   *
+   */
+  resetPlacement() {
+    agent
+      .resetPlacement()
+      .then(() => this.setState({ issuanceId: null, credentialId: null }));
+  }
+
+  /**
    * Request context when component mounts.
    */
   componentDidMount() {
@@ -105,8 +115,10 @@ class App extends React.Component {
     }
 
     agent.getContext().then((response) => {
-      this.setState({ versionInfo: response.data.version });
-      this.setState({ context: response.context });
+      this.setState({
+        versionInfo: response.data.version,
+        context: response.context,
+      });
       agent.hasAPIKey().then((hasAPIKey) => {
         this.setState(hasAPIKey);
         agent
@@ -156,7 +168,10 @@ class App extends React.Component {
                   />
                 ) : null}
                 {this.state.issuanceId && this.state.issuanceId !== "new" ? (
-                  <ListCred issuanceId={this.state.issuanceId} />
+                  <ListCred
+                    issuanceId={this.state.issuanceId}
+                    onReconfigure={this.resetPlacement}
+                  />
                 ) : null}
               </>
             ) : (

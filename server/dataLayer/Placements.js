@@ -12,4 +12,7 @@ Placements.setPlacement = (placementId, issuanceId, ownerId) =>
     owner_id: ownerId,
   });
 
+Placements.removePlacement = (placementId) =>
+  knex("placements").where("placement_id", placementId).del();
+
 module.exports = Placements;

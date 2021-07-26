@@ -21,7 +21,6 @@ function getVersion() {
 router.use(jwtMiddleware);
 
 router.get("/context", (req, res, next) => {
-  console.log(JSON.stringify(req.user));
   res.send({
     context: createContext(req.user),
     data: { version: getVersion() },
@@ -42,6 +41,10 @@ router.get("/placement", (req, res, next) => {
   ).then(({ issuance_id: issuanceId }) =>
     res.send({ issuance_id: issuanceId })
   );
+});
+
+router.delete("/placement", (req, res, next) => {
+  Placements.removePlacement(req.user.resource_link_id).then(res.send());
 });
 
 router.get("/credentials", (req, res, next) => {
