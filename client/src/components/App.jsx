@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga";
 import qs from "qs";
 import { Spinner, View } from "@instructure/ui";
@@ -13,35 +13,27 @@ import SelectIssuance from "./SelectIssuance";
 import CreateIssuance from "./CreateIssuance";
 import EnterKey from "./EnterKey";
 
-/** App top-level component */
-class App extends React.Component {
-  /** @param {object} props */
-  constructor(props) {
-    super(props);
-    this.state = {
-      versionInfo: null,
-      context: null,
-      apiKey: null,
-      issuanceId: null,
-      credentialId: null,
-    };
-    this.setAPIKey = this.setAPIKey.bind(this);
-    this.selectCred = this.selectCred.bind(this);
-    this.createCred = this.createCred.bind(this);
-    this.selectIssuance = this.selectIssuance.bind(this);
-    this.createIssuance = this.createIssuance.bind(this);
-    this.resetPlacement = this.resetPlacement.bind(this);
-  }
+/**
+ * App top-level component
+ *
+ * @return {Component}
+ */
+const App = () => {
+  const [versionInfo, setVersionInfo] = useState(null);
+  const [context, setContext] = useState(null);
+  const [apiKey, setApiKey] = useState(null);
+  const [issuanceId, setIssuanceId] = useState(null);
+  const [credentialId, setCredentialId] = useState(null);
 
   /**
    * Save the user's API key
    *
    * @param {String} apiKey
    */
-  setAPIKey(apiKey) {
+  const saveAPIKey = (apiKey) => {
     agent.setAPIKey(apiKey);
-    this.setState({ apiKey });
-  }
+    setApiKey(apiKey);
+  };
 
   /**
    * Create a credential for this placement
@@ -50,30 +42,30 @@ class App extends React.Component {
    * @param {String} title
    * @param {Credential} template
    */
-  createCred(groupId, title, template) {
+  const createCred = (groupId, title, template) => {
     agent
       .createCred(groupId, title, template)
-      .then((created) => this.selectCred(created.id));
-  }
+      .then((created) => selectCred(created.id));
+  };
 
   /**
    * Select the credential for this placement
    *
    * @param {Number|"new"} credentialId
    */
-  selectCred(credentialId) {
-    this.setState({ credentialId });
-  }
+  const selectCred = (credentialId) => {
+    setCredentialId(credentialId);
+  };
 
   /**
    * Select the issuance for this placement
    *
    * @param {Number|"new"} issuanceId
    */
-  selectIssuance(issuanceId) {
-    this.setState({ issuanceId });
+  const selectIssuance = (issuanceId) => {
+    setIssuanceId(issuanceId);
     issuanceId === "new" ? null : agent.setPlacement(issuanceId);
-  }
+  };
 
   /**
    * Create an issuance for this placement
@@ -81,25 +73,26 @@ class App extends React.Component {
    * @param {String} name
    * @param {String} date
    */
-  createIssuance(name, date) {
+  const createIssuance = (name, date) => {
     agent
-      .createIssuance(this.state.credentialId, name, date)
-      .then((created) => this.selectIssuance(created.id));
-  }
+      .createIssuance(credentialId, name, date)
+      .then((created) => selectIssuance(created.id));
+  };
 
   /**
    *
    */
-  resetPlacement() {
-    agent
-      .resetPlacement()
-      .then(() => this.setState({ issuanceId: null, credentialId: null }));
-  }
+  const resetPlacement = () => {
+    agent.resetPlacement().then(() => {
+      setIssuanceId(null);
+      setCredentialId(null);
+    });
+  };
 
   /**
    * Request context when component mounts.
    */
-  componentDidMount() {
+  useEffect(() => {
     const queryParameters = window.location.search;
 
     let analyticsId;
@@ -115,87 +108,74 @@ class App extends React.Component {
     }
 
     agent.getContext().then((response) => {
-      this.setState({
-        versionInfo: response.data.version,
-        context: response.context,
-      });
-      agent.hasAPIKey().then((hasAPIKey) => {
-        this.setState(hasAPIKey);
-        agent
-          .getPlacement()
-          .then(({ issuance_id: issuanceId }) => this.setState({ issuanceId }));
-      });
+      setVersionInfo(response.data.version);
+      setContext(response.context);
     });
-  }
+    agent.hasAPIKey().then((res) => setApiKey(res.apiKey));
+  }, []);
 
   /**
-   * @return {object} Render the App component.
+   * Once we know we have an API key we can request our placement
    */
-  render() {
-    return (
-      <Layout versionInfo={this.state.versionInfo || ""}>
-        {this.state.context ? (
-          <div>
-            <Instructions
-              role={this.state.context.userRole}
-              lmsType={this.state.context.lmsType}
-            />
-            {"instructor" === this.state.context.userRole ? (
-              <>
-                {this.state.apiKey === false ? (
-                  <EnterKey setAPIKey={this.setAPIKey} />
-                ) : null}
-                {this.state.apiKey &&
-                !this.state.credentialId &&
-                !this.state.issuanceId ? (
-                  <SelectCred onSelect={this.selectCred} />
-                ) : null}
-                {"new" === this.state.credentialId ? (
-                  <CreateCred onCreate={this.createCred} />
-                ) : null}
-                {this.state.credentialId &&
-                this.state.credentialId !== "new" &&
-                !this.state.issuanceId ? (
-                  <SelectIssuance
-                    credentialId={this.state.credentialId}
-                    onSelect={this.selectIssuance}
-                  />
-                ) : null}
-                {"new" === this.state.issuanceId ? (
-                  <CreateIssuance
-                    credentialId={this.state.credentialId}
-                    onCreate={this.createIssuance}
-                  />
-                ) : null}
-                {this.state.issuanceId && this.state.issuanceId !== "new" ? (
-                  <ListCred
-                    issuanceId={this.state.issuanceId}
-                    onReconfigure={this.resetPlacement}
-                  />
-                ) : null}
-              </>
-            ) : (
-              <>
-                {"learner" === this.state.context.userRole &&
-                this.state.issuanceId ? (
-                  <ClaimCred />
-                ) : (
-                  <p>
-                    The instructor has not completed setting up this credential,
-                    please try again later.
-                  </p>
-                )}
-              </>
-            )}
-          </div>
-        ) : (
-          <View as="div" margin="large auto" textAlign="center">
-            <Spinner size="large" renderTitle="Loading..." />
-          </View>
-        )}
-      </Layout>
-    );
-  }
-}
+  useEffect(() => {
+    agent
+      .getPlacement()
+      .then(({ issuance_id: issuanceId }) => setIssuanceId(issuanceId));
+  }, [apiKey]);
+
+  return (
+    <Layout versionInfo={versionInfo || ""}>
+      {context ? (
+        <div>
+          <Instructions role={context.userRole} lmsType={context.lmsType} />
+          {"instructor" === context.userRole ? (
+            <>
+              {apiKey === false ? <EnterKey setAPIKey={saveAPIKey} /> : null}
+              {apiKey && !credentialId && !issuanceId ? (
+                <SelectCred onSelect={selectCred} />
+              ) : null}
+              {"new" === credentialId ? (
+                <CreateCred onCreate={createCred} />
+              ) : null}
+              {credentialId && credentialId !== "new" && !issuanceId ? (
+                <SelectIssuance
+                  credentialId={credentialId}
+                  onSelect={selectIssuance}
+                />
+              ) : null}
+              {"new" === issuanceId ? (
+                <CreateIssuance
+                  credentialId={credentialId}
+                  onCreate={createIssuance}
+                />
+              ) : null}
+              {issuanceId && issuanceId !== "new" ? (
+                <ListCred
+                  issuanceId={issuanceId}
+                  onReconfigure={resetPlacement}
+                />
+              ) : null}
+            </>
+          ) : (
+            <>
+              {"learner" === context.userRole && issuanceId ? (
+                <ClaimCred />
+              ) : (
+                <p>
+                  The instructor has not completed setting up this credential,
+                  please try again later.
+                </p>
+              )}
+            </>
+          )}
+        </div>
+      ) : (
+        <View as="div" margin="large auto" textAlign="center">
+          <Spinner size="large" renderTitle="Loading..." />
+        </View>
+      )}
+    </Layout>
+  );
+};
 
 export default App;

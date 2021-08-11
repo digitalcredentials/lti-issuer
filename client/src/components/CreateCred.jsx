@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { Button } from "@instructure/ui-buttons";
@@ -7,71 +7,39 @@ import { FormFieldGroup } from "@instructure/ui-form-field";
 import { TextInput } from "@instructure/ui-text-input";
 import { TextArea } from "@instructure/ui-text-area";
 import { PropTypes } from "prop-types";
-import agent from "../agent";
+import { getGroups } from "../agent";
+import PageHead from "./PageHead";
 import { logo, badge } from "../base64images";
 
 /**
- *
+ * @param {Object} props
+ * @return {Component}
  */
-class CreateCred extends React.Component {
-  /**
-   *
-   */
-  constructor() {
-    super();
-    this.state = {
-      groups: null,
-      group: "",
-      title: null,
-      description: null,
-      criteria: null,
-    };
-    this.getValue = this.getValue.bind(this);
-    this.handleGroupSelect = this.handleGroupSelect.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.buildBadgeTemplate = this.buildBadgeTemplate.bind(this);
-  }
+const CreateCred = (props) => {
+  const [groups, setGroups] = useState(null);
+  const [group, setGroup] = useState("");
+  const [title, setTitle] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [criteria, setCriteria] = useState(null);
 
   /**
    *
    */
-  componentDidMount() {
-    agent.getGroups().then((groups) => this.setState({ groups }));
-  }
-
-  /**
-   * @param {String} e
-   */
-  getValue(e) {
-    const value = e.target.value;
-    const name = e.target.name;
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  /**
-   * @param {Event} e
-   */
-  handleGroupSelect(e, { id, value: group }) {
-    this.setState({ group });
-  }
+  useEffect(() => {
+    getGroups().then((groups) => setGroups(groups));
+  }, []);
 
   /**
    *
    */
-  handleSubmit() {
-    this.props.onCreate(
-      this.state.group,
-      this.state.title,
-      this.buildBadgeTemplate()
-    );
-  }
+  const handleSubmit = () => {
+    props.onCreate(group, title, buildBadgeTemplate());
+  };
 
   /**
    * @return {Object}
    */
-  buildBadgeTemplate() {
+  const buildBadgeTemplate = () => {
     return {
       "@context": [
         "https://www.w3.org/2018/credentials/v1",
@@ -100,101 +68,83 @@ class CreateCred extends React.Component {
         hasCredential: {
           id: "{{ISSUANCE_URL}}",
           type: "EducationalOccupationalCredential",
-          name: this.state.title,
+          name: title,
           image: badge,
-          description: this.state.description,
-          competencyRequired: this.state.criteria,
+          description: description,
+          competencyRequired: criteria,
           credentialCategory: "badge",
         },
       },
     };
-  }
+  };
 
-  /**
-   * @return {Component}
-   */
-  render() {
-    return (
-      <View as="div" margin="medium none none none" width="75%">
-        <View as="div" textAlign="start" padding="none medium">
-          <Text size="large">Create Credential</Text>
-          <div
-            style={{
-              borderBottom: "solid",
-              borderColor: "rgba(0,48,87,1)",
-              borderWidth: "3px",
-              marginTop: "17px",
-            }}
-          ></div>
-        </View>
-        <View as="div" textAlign="start" padding="medium medium none medium">
-          <Text size="small" color="secondary">
-            Here you can create a credential
-          </Text>
-        </View>
-        {this.state.groups ? (
-          <View as="div" textAlign="start" padding="medium medium none medium">
-            <FormFieldGroup rowSpacing="small" layout="inline" vAlign="middle">
-              <TextInput
-                label="Title"
-                name="title"
-                isRequired={true}
-                onChange={this.getValue}
-              />
-              <TextArea
-                label="Description"
-                name="description"
-                required={true}
-                onChange={this.getValue}
-              />
-              <TextArea
-                label="Criteria"
-                name="criteria"
-                required={true}
-                onChange={this.getValue}
-              />
-              <SimpleSelect
-                renderLabel="Issuing Department"
-                isRequired={true}
-                value={this.state.group}
-                onChange={this.handleGroupSelect}
-              >
-                <SimpleSelect.Option value=""></SimpleSelect.Option>
-                {this.state.groups.map((group) => (
-                  <SimpleSelect.Option
-                    key={group.id}
-                    id={group.id}
-                    value={group.id}
-                  >
-                    {group.name}
-                  </SimpleSelect.Option>
-                ))}
-              </SimpleSelect>
-            </FormFieldGroup>
-            <View display="block" padding="medium none">
-              <Button
-                display="block"
-                textAlign="center"
-                color="success"
-                interaction={
-                  this.state.title &&
-                  this.state.description &&
-                  this.state.criteria &&
-                  this.state.group !== ""
-                    ? "enabled"
-                    : "disabled"
-                }
-                onClick={this.handleSubmit}
-              >
-                Submit
-              </Button>
-            </View>
-          </View>
-        ) : null}
+  return (
+    <View as="div" margin="medium none none none" width="75%">
+      <PageHead>Create Credential</PageHead>
+      <View as="div" textAlign="start" padding="medium medium none medium">
+        <Text size="small" color="secondary">
+          Here you can create a credential
+        </Text>
       </View>
-    );
-  }
-}
+      {groups ? (
+        <View as="div" textAlign="start" padding="medium medium none medium">
+          <FormFieldGroup rowSpacing="small" layout="inline" vAlign="middle">
+            <TextInput
+              renderLabel="Title"
+              name="title"
+              isRequired={true}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextArea
+              label="Description"
+              name="description"
+              required={true}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <TextArea
+              label="Criteria"
+              name="criteria"
+              required={true}
+              onChange={(e) => setCriteria(e.target.value)}
+            />
+            <SimpleSelect
+              renderLabel="Issuing Department"
+              isRequired={true}
+              value={group}
+              onChange={(e, { value }) => setGroup(value)}
+            >
+              <SimpleSelect.Option value=""></SimpleSelect.Option>
+              {groups.map((group) => (
+                <SimpleSelect.Option
+                  key={group.id}
+                  id={group.id}
+                  value={group.id}
+                >
+                  {group.name}
+                </SimpleSelect.Option>
+              ))}
+            </SimpleSelect>
+          </FormFieldGroup>
+          <View display="block" padding="medium none">
+            <Button
+              display="block"
+              textAlign="center"
+              color="success"
+              interaction={
+                title && description && criteria && group !== ""
+                  ? "enabled"
+                  : "disabled"
+              }
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </View>
+        </View>
+      ) : null}
+    </View>
+  );
+};
 
 CreateCred.propTypes = {
   onCreate: PropTypes.func,

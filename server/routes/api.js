@@ -36,10 +36,8 @@ router.post("/apiKey", (req, res, next) => {
 });
 
 router.get("/placement", (req, res, next) => {
-  Placements.getPlacement(
-    req.user.resource_link_id
-  ).then(({ issuance_id: issuanceId }) =>
-    res.send({ issuance_id: issuanceId })
+  Placements.getPlacement(req.user.resource_link_id).then((placement) =>
+    res.send(placement ? placement : { issuance_id: null })
   );
 });
 

@@ -1,89 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "@instructure/ui-view";
-import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
 import { IconAddSolid } from "@instructure/ui-icons";
 import { PropTypes } from "prop-types";
-import agent from "../agent";
+import PageHead from "./PageHead";
+import { getCredentials } from "../agent";
 
 /**
- * similar to ViewCredTeacher but will show status of credential
+ * @param {Object} props
+ * @return {Component}
  */
-class SelectCredential extends React.Component {
-  /**
-   *
-   */
-  constructor() {
-    super();
-    this.state = { value: null };
-    this.handleSelect = this.handleSelect.bind(this);
-  }
+const SelectCredential = (props) => {
+  const [credentials, setCredentials] = useState(null);
+  const [selected, setSelected] = useState("new");
 
-  /**
-   *
-   */
-  componentDidMount() {
-    agent.getCredentials().then((credentials) => {
-      this.setState({ credentials });
-    });
-  }
+  useEffect(() => {
+    getCredentials().then((c) => setCredentials(c));
+  }, []);
 
   /**
    * @param {Event} e
    */
-  handleSelect(e, { id, value }) {
-    this.setState({ value });
-    this.props.onSelect(value);
-  }
+  const handleSelect = (e, { value }) => {
+    setSelected(value);
+    props.onSelect(value);
+  };
 
-  /**
-   * @return {Component}
-   */
-  render() {
-    return (
-      <View as="div" margin="medium none none none">
-        <View as="div" textAlign="start" padding="medium medium none medium">
-          <Text size="large">Select a Credential</Text>
-          <div
-            style={{
-              borderBottom: "solid",
-              borderColor: "rgba(0,48,87,1)",
-              borderWidth: "3px",
-              marginTop: "17px",
-            }}
-          ></div>
-        </View>
-        <View as="div" textAlign="start" padding="medium medium none medium">
-          {this.state.credentials ? (
-            <SimpleSelect
-              renderLabel="Select a Credential"
-              onChange={this.handleSelect}
-              value={this.state.selected}
-              defaultValue="new"
-            >
-              {this.state.credentials.map((cred) => (
-                <SimpleSelect.Option
-                  id={cred.id.toString(10)}
-                  key={cred.id}
-                  value={cred.id.toString(10)}
-                >
-                  {cred.title}
-                </SimpleSelect.Option>
-              ))}
+  return (
+    <View as="div" margin="medium none none none">
+      <PageHead>Select a Credential</PageHead>
+      <View as="div" textAlign="start" padding="medium medium none medium">
+        {credentials ? (
+          <SimpleSelect
+            renderLabel="Select a Credential"
+            onChange={handleSelect}
+            value={selected}
+            defaultValue="new"
+          >
+            {credentials.map((cred) => (
               <SimpleSelect.Option
-                id="new"
-                value="new"
-                renderBeforeLabel={<IconAddSolid />}
+                id={cred.id.toString(10)}
+                key={cred.id}
+                value={cred.id.toString(10)}
               >
-                Create Credential
+                {cred.title}
               </SimpleSelect.Option>
-            </SimpleSelect>
-          ) : null}
-        </View>
+            ))}
+            <SimpleSelect.Option
+              id="new"
+              value="new"
+              renderBeforeLabel={<IconAddSolid />}
+            >
+              Create Credential
+            </SimpleSelect.Option>
+          </SimpleSelect>
+        ) : null}
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 SelectCredential.propTypes = {
   onSelect: PropTypes.func,

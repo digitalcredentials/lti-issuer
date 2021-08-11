@@ -1,90 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "@instructure/ui-view";
-import { Text } from "@instructure/ui-text";
 import { SimpleSelect } from "@instructure/ui-simple-select";
 import { IconAddSolid } from "@instructure/ui-icons";
 import { PropTypes } from "prop-types";
+import PageHead from "./PageHead";
 import util from "../util";
-import agent from "../agent";
+import { getIssuances } from "../agent";
 
 /**
- *
+ * @param {Object} props
+ * @return {Component}
  */
-class SelectIssuance extends React.Component {
-  /**
-   *
-   */
-  constructor() {
-    super();
-    this.state = { value: null };
-    this.handleSelect = this.handleSelect.bind(this);
-  }
+const SelectIssuance = (props) => {
+  const [selected, setSelected] = useState("new");
+  const [issuances, setIssuances] = useState(null);
 
-  /**
-   *
-   */
-  componentDidMount() {
-    agent.getIssuances(this.props.credentialId).then((issuances) => {
-      this.setState({ issuances });
-    });
-  }
+  useEffect(() => {
+    getIssuances(props.credentialId).then((i) => setIssuances(i));
+  }, []);
 
   /**
    * @param {Event} e
    */
-  handleSelect(e, { id, value }) {
-    this.setState({ value });
-    this.props.onSelect(value);
-  }
+  const handleSelect = (e, { value }) => {
+    setSelected(value);
+    props.onSelect(value);
+  };
 
-  /**
-   * @return {Component}
-   */
-  render() {
-    return (
-      <View as="div" margin="medium none none none">
-        <View as="div" textAlign="start" padding="medium medium none medium">
-          <Text size="large">Select an Issuance</Text>
-          <div
-            style={{
-              borderBottom: "solid",
-              borderColor: "rgba(0,48,87,1)",
-              borderWidth: "3px",
-              marginTop: "17px",
-            }}
-          ></div>
-        </View>
-        <View as="div" textAlign="start" padding="medium medium none medium">
-          {this.state.issuances ? (
-            <SimpleSelect
-              renderLabel="Select an Issuance"
-              onChange={this.handleSelect}
-              value={this.state.selected}
-              defaultValue="new"
-            >
-              {this.state.issuances.map((issuance) => (
-                <SimpleSelect.Option
-                  id={issuance.id.toString(10)}
-                  key={issuance.id}
-                  value={issuance.id.toString(10)}
-                >
-                  {issuance.name} - {util.formatDate(issuance.issueDate)}
-                </SimpleSelect.Option>
-              ))}
+  return (
+    <View as="div" margin="medium none none none">
+      <PageHead>Select an Issuance</PageHead>
+      <View as="div" textAlign="start" padding="medium medium none medium">
+        {issuances ? (
+          <SimpleSelect
+            renderLabel="Select an Issuance"
+            onChange={handleSelect}
+            value={selected}
+            defaultValue="new"
+          >
+            {issuances.map((issuance) => (
               <SimpleSelect.Option
-                id="new"
-                value="new"
-                renderBeforeLabel={<IconAddSolid />}
+                id={issuance.id.toString(10)}
+                key={issuance.id}
+                value={issuance.id.toString(10)}
               >
-                Create Issuance
+                {issuance.name} - {util.formatDate(issuance.issueDate)}
               </SimpleSelect.Option>
-            </SimpleSelect>
-          ) : null}
-        </View>
+            ))}
+            <SimpleSelect.Option
+              id="new"
+              value="new"
+              renderBeforeLabel={<IconAddSolid />}
+            >
+              Create Issuance
+            </SimpleSelect.Option>
+          </SimpleSelect>
+        ) : null}
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 SelectIssuance.propTypes = {
   credentialId: PropTypes.string,

@@ -13,7 +13,7 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ["dist"],
-  plugins: ["react"],
+  plugins: ["react", "react-hooks"],
   parser: "babel-eslint",
   parserOptions: {
     ecmaFeatures: {
@@ -25,6 +25,8 @@ module.exports = {
   root: true,
   rules: {
     "no-undef": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
   },
   settings: {
     react: {

@@ -104,3 +104,18 @@ export default {
   getEnrolled,
   postClaim,
 };
+export {
+  getContext,
+  hasAPIKey,
+  setAPIKey,
+  getPlacement,
+  resetPlacement,
+  getCredentials,
+  getIssuances,
+  getGroups,
+  createCred,
+  createIssuance,
+  setPlacement,
+  getEnrolled,
+  postClaim,
+};
