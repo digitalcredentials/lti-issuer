@@ -67,7 +67,7 @@ const CreateCred = (props) => {
         id: "{{RECIPIENT_DID}}",
         hasCredential: {
           id: "{{ISSUANCE_URL}}",
-          type: "EducationalOccupationalCredential",
+          type: ["EducationalOccupationalCredential"],
           name: title,
           image: badge,
           description: description,
