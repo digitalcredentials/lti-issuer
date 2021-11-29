@@ -33,8 +33,13 @@ Creds.getIssuances = (userId, credId) =>
       err.status && err.status === 404 ? [] : Promise.reject(err)
     );
 Creds.getGroups = (userId) => requests.get(userId, "/groups");
-Creds.createCred = (userId, groupid, title, template) =>
-  requests.post(userId, "/credentials", { groupid, title, template });
+Creds.createCred = (userId, groupid, title, templateValues) =>
+  requests.post(userId, "/credentials", {
+    groupid,
+    title,
+    templateValues,
+    templatePath: "default.json",
+  });
 Creds.createIssuance = (userId, credId, name, issueDate) =>
   requests.post(userId, `/issuances/${credId}`, { name, issueDate });
 Creds.getEnrolled = (userId, issuanceId) =>

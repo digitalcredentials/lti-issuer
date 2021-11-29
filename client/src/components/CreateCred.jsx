@@ -9,7 +9,6 @@ import { TextArea } from "@instructure/ui-text-area";
 import { PropTypes } from "prop-types";
 import { getGroups } from "../agent";
 import PageHead from "./PageHead";
-import { logo, badge } from "../base64images";
 
 /**
  * @param {Object} props
@@ -41,40 +40,9 @@ const CreateCred = (props) => {
    */
   const buildBadgeTemplate = () => {
     return {
-      "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "https://w3id.org/security/suites/ed25519-2020/v1",
-        "https://w3id.org/dcc/v1",
-        {
-          competencyRequired:
-            "http://schema.org/EducationalOccupationalCredential#competencyRequired",
-          credentialCategory:
-            "http://schema.org/EducationalOccupationalCredential#credentialCategory",
-        },
-      ],
-      id: "{{AWARD_URL}}",
-      type: ["VerifiableCredential", "Assertion"],
-      issuer: {
-        type: "Issuer",
-        id: "{{ISSUER_DID}}",
-        name: "{{ISSUER_NAME}}",
-        image: logo,
-      },
-      issuanceDate: "{{DATE}}",
-      credentialSubject: {
-        type: "Person",
-        name: "{{RECIPIENT_NAME}}",
-        id: "{{RECIPIENT_DID}}",
-        hasCredential: {
-          id: "{{ISSUANCE_URL}}",
-          type: ["EducationalOccupationalCredential"],
-          name: title,
-          image: badge,
-          description: description,
-          competencyRequired: criteria,
-          credentialCategory: "badge",
-        },
-      },
+      CREDENTIAL_NAME: title,
+      CREDENTIAL_DESCRIPTION: description,
+      CREDENTIAL_CRITERIA: criteria,
     };
   };
 
