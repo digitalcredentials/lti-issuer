@@ -7,6 +7,7 @@ const Keys = require("../dataLayer/Keys");
 const Placements = require("../dataLayer/Placements");
 const Creds = require("../dataLayer/Creds");
 const util = require("../lib/util");
+const externalIdLTIVar = require("../config").externalIdLTIVar;
 
 /**
  * @return {string}
@@ -101,23 +102,19 @@ router.get(
   }
 );
 
-router.post(
-  "/claim",
-  (
-    {
-      user: {
-        resource_link_id: contextId,
-        lis_person_contact_email_primary: userEmail,
-        lis_person_name_full: userName,
-      },
-    },
-    res,
-    next
-  ) => {
-    Creds.claimAward(contextId, userEmail, userName).then((award) =>
-      res.send(award)
-    );
-  }
-);
+router.post("/claim", ({ user }, res, next) => {
+  const {
+    resource_link_id: contextId,
+    lis_person_contact_email_primary: userEmail,
+    lis_person_name_full: userName,
+  } = user;
+  const userExternalId = externalIdLTIVar ? user[externalIdLTIVar] : null;
+  Creds.claimAward(
+    contextId,
+    userEmail,
+    userName,
+    userExternalId
+  ).then((award) => res.send(award));
+});
 
 module.exports = router;

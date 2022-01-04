@@ -47,6 +47,8 @@ config.credadmin = {
   url: getEnvVarOrDefault("CRED_ADMIN_URL", "http://localhost/"),
 };
 
+config.externalIdLTIVar = getEnvVarOrNull("EXTERNAL_ID_LTI_VAR");
+
 if (process.env.NODE_ENV === "development") {
   config.logLevel = "debug";
 }

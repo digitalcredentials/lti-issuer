@@ -45,15 +45,23 @@ Creds.createIssuance = (userId, credId, name, issueDate) =>
 Creds.getEnrolled = (userId, issuanceId) =>
   requests.get(userId, `/enroll/${issuanceId}`);
 
-Creds.claimAward = (contextId, email, name) =>
+Creds.claimAward = (contextId, email, name, externalId) =>
   Placements.getPlacement(contextId).then((placement) => {
     // Find or create the recipient
     return requests
-      .get(placement.owner_id, "/recipients", { email })
+      .get(
+        placement.owner_id,
+        "/recipients",
+        externalId ? { externalId } : { email }
+      )
       .then((recipient) => recipient.id)
       .catch((err) =>
         requests
-          .post(placement.owner_id, "/recipients", { name, email })
+          .post(placement.owner_id, "/recipients", {
+            name,
+            email,
+            ...(externalId ? { externalId } : null),
+          })
           .then((recipient) => recipient.id)
       )
       .then((recipientId) =>
