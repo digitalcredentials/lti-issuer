@@ -4,7 +4,6 @@ import { View } from "@instructure/ui-view";
 import { Text } from "@instructure/ui-text";
 import { Link } from "@instructure/ui-link";
 import { List } from "@instructure/ui-list";
-import InstallWallet from "./InstallWallet";
 import PageHead from "./PageHead";
 
 /**
@@ -77,10 +76,16 @@ const Instructions = (props) => {
             <List as="ol">
               <List.Item>
                 Ensure you have created a digital wallet for verifiable
-                credentials. We recommend &quot;CredWallet&quot;, created by the
-                Digital Credentials Consortium, which can be installed on iOS
-                and Android devices.
-                <InstallWallet />
+                credentials. We recommend{" "}
+                <a
+                  href="https://eduwallet.app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  EduWallet
+                </a>
+                , created by the Digital Credentials Consortium, which can be
+                installed on iOS and Android devices.
               </List.Item>
               <List.Item>
                 If you&apos;re viewing this screen on your desktop, scan the QR
