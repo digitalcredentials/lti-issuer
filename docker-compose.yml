@@ -39,7 +39,7 @@ services:
     image: digcreds/cred-admin
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
-      OIDC_ISSUER_URL: $OIDC_ISSUER_URL
+      OIDC_ISSUER_URL: http://oauth:8080/default
       PUBLIC_URL: https://cred.127.0.0.1.nip.io
     labels:
       - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.nip.io`)"
@@ -49,6 +49,14 @@ services:
         condition: service_healthy
     expose:
       - "3000"
+
+  oauth:
+    image: ghcr.io/navikt/mock-oauth2-server:0.4.1
+    expose:
+      - "8080"
+    labels:
+      - "traefik.http.routers.oauth.rule=Host(`oauth.127.0.0.1.nip.io`)"
+      - "traefik.http.routers.oauth.tls=true"
 
   reverse-proxy:
     image: traefik:v2.0
