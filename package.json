@@ -1,6 +1,6 @@
 {
   "name": "lti-issuer",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "private": false,
   "license": "MIT",
   "scripts": {
