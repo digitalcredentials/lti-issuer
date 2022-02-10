@@ -16,6 +16,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - proxy
 
   web:
     build: .
@@ -35,13 +37,16 @@ services:
         condition: service_healthy
     expose:
       - "3000"
+    networks:
+      - proxy
 
   cred-admin:
     image: digcreds/cred-admin
     environment:
       CA_DB_CONNECTION_URL: "postgres://credadmin:admin_cred_access@db:5432/credadmin"
-      OIDC_ISSUER_URL: http://oauth:8080/default
+      OIDC_ISSUER_URL: https://oauth.127.0.0.1.nip.io/default
       PUBLIC_URL: https://cred.127.0.0.1.nip.io
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
     labels:
       - "traefik.http.routers.credadmin.rule=Host(`cred.127.0.0.1.nip.io`)"
       - "traefik.http.routers.credadmin.tls=true"
@@ -50,6 +55,8 @@ services:
         condition: service_healthy
     expose:
       - "3000"
+    networks:
+      - proxy
 
   oauth:
     image: ghcr.io/navikt/mock-oauth2-server:0.4.1
@@ -58,9 +65,15 @@ services:
     labels:
       - "traefik.http.routers.oauth.rule=Host(`oauth.127.0.0.1.nip.io`)"
       - "traefik.http.routers.oauth.tls=true"
+    networks:
+      - proxy
 
   reverse-proxy:
     image: traefik:v2.0
+    networks:
+      proxy:
+        aliases:
+          - oauth.127.0.0.1.nip.io
     ports:
       - "80:80"
       - "443:443"
@@ -73,3 +86,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  proxy:
+    driver: bridge
