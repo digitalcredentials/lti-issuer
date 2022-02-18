@@ -75,14 +75,10 @@ const Instructions = (props) => {
             badges or certificates. To get started:
             <List as="ol">
               <List.Item>
-                Ensure you have created a digital wallet for verifiable
+                Ensure you have installed a digital wallet for verifiable
                 credentials. We recommend{" "}
-                <a
-                  href="https://eduwallet.app"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  EduWallet
+                <a href="https://lcw.app" target="_blank" rel="noreferrer">
+                  Learner Credential Wallet
                 </a>
                 , created by the Digital Credentials Consortium, which can be
                 installed on iOS and Android devices.
