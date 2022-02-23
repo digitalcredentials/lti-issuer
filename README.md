@@ -24,3 +24,26 @@ Now you can build and start the server by:
 4. Use the `cred-admin` API to set up a user in a group and note the user's API key as you'll need it when launching the tool for the first time
 5. Configure the LTI consumer to use the launch URL `https://dev.127.0.0.1.nip.io` and the `LTI_KEY` and `LTI_SECRET` from your `.env` file
 6. You should now be able to launch the tool from your LTI consumer
+
+Configuration
+=============
+
+All configuration is done through environment variables.
+
+|Variable           |Default          |Description                           |
+|-------------------|-----------------|--------------------------------------|
+|ANALYTICS_ID       |                 |Google analytics id                   |
+|CRED_ADMIN_URL     |http://localhost/|Location of cred-admin                |
+|DB_HOST            |localhost        |Postgres DB host                      |
+|DB_NAME            |ltiissuer        |Postgres DB name                      |
+|DB_PASSWORD        |                 |Postgres DB password                  |
+|DB_PORT            |5432             |Postgres DB port                      |
+|DB_USER            |ltiadmin         |Postgres DB user                      |
+|EXTERNAL_ID_LTI_VAR|                 |LTI variable to send as external id   |
+|JWT_SECRET         |secret           |Secret for signing JWTs               |
+|LOG_LEVEL          |info             |Bunyan log level                      |
+|LTI_KEY            |                 |LTI producer key                      |
+|LTI_SECRET         |                 |LTI producer secret                   |
+|PORT               |3000             |Port where server will listen for http|
+|SENTRY_DSN         |                 |Send crash reports to this sentry id  |
+
