@@ -54,7 +54,7 @@ Creds.claimAward = (contextId, email, name, externalId) =>
         "/recipients",
         externalId ? { externalId } : { email }
       )
-      .then((recipient) => recipient.id)
+      .then((recipient) => ({ created: false, recipientId: recipient.id }))
       .catch((err) =>
         requests
           .post(placement.owner_id, "/recipients", {
@@ -62,22 +62,33 @@ Creds.claimAward = (contextId, email, name, externalId) =>
             email,
             ...(externalId ? { externalId } : null),
           })
-          .then((recipient) => recipient.id)
+          .then((recipient) => ({ created: true, recipientId: recipient.id }))
       )
-      .then((recipientId) =>
-        requests
-          .post(placement.owner_id, `/enroll/${placement.issuance_id}`, {
+      .then(async ({ created, recipientId }) => {
+        const endpoint = `/enroll/${placement.issuance_id}`;
+        let alreadyEnrolled = false;
+        // If we just created the recipient they won't be enrolled yet,
+        // so we can skip this check in that case
+        if (!created) {
+          const enrolled = await requests.get(placement.owner_id, endpoint);
+          alreadyEnrolled = enrolled.recipients
+            .map((recipient) =>
+              recipient.RecipientIssuance.isApproved ? recipient.id : null
+            )
+            .includes(recipientId);
+        }
+        // Only enroll the recipient if they haven't been already,
+        // otherwise they get a new challenge and the old links will break
+        if (!alreadyEnrolled) {
+          await requests.post(placement.owner_id, endpoint, {
             recipientId,
             isApproved: true,
-          })
-          .then(() =>
-            superagent
-              .get(
-                `${config.url}/claim/${recipientId}/${placement.issuance_id}`
-              )
-              .then((res) => res.body)
-          )
-      )
+          });
+        }
+        return superagent
+          .get(`${config.url}/claim/${recipientId}/${placement.issuance_id}`)
+          .then((res) => res.body);
+      })
       .catch((err) => console.log(err));
   });
 
