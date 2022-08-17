@@ -3,6 +3,8 @@ version: "2.4"
 services:
   db:
     image: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
       - postgres_data:/var/lib/postgresql/data/
       - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
@@ -27,6 +29,7 @@ services:
       LTI_KEY: $LTI_KEY
       LTI_SECRET: $LTI_SECRET
       DB_HOST: db
+      DB_PASSWORD: adminltiaccess
       CRED_ADMIN_URL: http://cred-admin:3000/api
       EXTERNAL_ID_LTI_VAR: $EXTERNAL_ID_LTI_VAR
     labels:
