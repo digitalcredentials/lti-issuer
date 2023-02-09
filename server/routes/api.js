@@ -61,11 +61,15 @@ router.get("/groups", (req, res, next) => {
 });
 
 router.post("/credential", (req, res, next) => {
+  const templatePath = req.user.custom_templatepath
+    ? req.user.custom_templatepath
+    : "default.json";
   Creds.createCred(
     req.user.user_id,
     req.body.groupId,
     req.body.title,
-    req.body.template
+    req.body.template,
+    templatePath
   ).then((cred) => res.send(cred));
 });
 
